@@ -7,8 +7,6 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/gin-gonic/gin"
 	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/config"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/redisservice"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/service"
 	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/storage"
 	redisCl "github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/pkg/redis"
 )
@@ -31,7 +29,6 @@ func main() {
 	}
 
 	sqrl := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-
 
 	logger.Fatalln(app.Run(gin.Default(), handler, logger, config.Server.Port))
 }
