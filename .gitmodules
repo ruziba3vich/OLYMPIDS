@@ -1,0 +1,3 @@
+[submodule "MEDAL/olympy-protos"]
+	path = MEDAL/olympy-protos
+	url = https://github.com/Javohir-A/olympy-protos.git
