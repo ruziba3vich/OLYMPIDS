@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/lib/pq"
 	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/config"
@@ -26,5 +27,8 @@ func ConnectDB(config *config.Config) (*sql.DB, error) {
 		db.Close()
 		return nil, err
 	}
+
+	log.Printf("--------------------------- Connected to the database %s ---------------------------\n", config.Database.DBName)
+
 	return db, nil
 }
