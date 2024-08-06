@@ -1,3 +1,6 @@
-[submodule "MEDAL/olympy-protos"]
-	path = MEDAL/olympy-protos
-	url = https://github.com/Javohir-A/olympy-protos.git
+[submodule "ATHLETE/protos_olympy"]
+	path = ATHLETE/protos_olympy
+	url = git@github.com:abdulazizax/protos_olympy.git
+[submodule "ATHLETE/olympy-protos"]
+	path = ATHLETE/olympy-protos
+	url = git@github.com:Javohir-A/olympy-protos.git
