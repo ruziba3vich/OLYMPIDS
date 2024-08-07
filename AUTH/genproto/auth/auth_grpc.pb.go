@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	AuthService_Register_FullMethodName = "/athlete.AuthService/Register"
-	AuthService_Login_FullMethodName    = "/athlete.AuthService/Login"
-	AuthService_Logout_FullMethodName   = "/athlete.AuthService/Logout"
+	AuthService_Register_FullMethodName    = "/athlete.AuthService/Register"
+	AuthService_Login_FullMethodName       = "/athlete.AuthService/Login"
+	AuthService_Logout_FullMethodName      = "/athlete.AuthService/Logout"
+	AuthService_CreateAdmin_FullMethodName = "/athlete.AuthService/CreateAdmin"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -33,6 +34,7 @@ type AuthServiceClient interface {
 	// rpc Verify(VerifyRequest) returns (VerifyResponse);
 	// rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
+	CreateAdmin(ctx context.Context, in *CreateAdminRequest, opts ...grpc.CallOption) (*CreateAdminResponse, error)
 }
 
 type authServiceClient struct {
@@ -73,6 +75,16 @@ func (c *authServiceClient) Logout(ctx context.Context, in *LogoutRequest, opts 
 	return out, nil
 }
 
+func (c *authServiceClient) CreateAdmin(ctx context.Context, in *CreateAdminRequest, opts ...grpc.CallOption) (*CreateAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateAdminResponse)
+	err := c.cc.Invoke(ctx, AuthService_CreateAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
@@ -82,6 +94,7 @@ type AuthServiceServer interface {
 	// rpc Verify(VerifyRequest) returns (VerifyResponse);
 	// rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
+	CreateAdmin(context.Context, *CreateAdminRequest) (*CreateAdminResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -97,6 +110,9 @@ func (UnimplementedAuthServiceServer) Login(context.Context, *LoginRequest) (*Lo
 }
 func (UnimplementedAuthServiceServer) Logout(context.Context, *LogoutRequest) (*LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+}
+func (UnimplementedAuthServiceServer) CreateAdmin(context.Context, *CreateAdminRequest) (*CreateAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAdmin not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -165,6 +181,24 @@ func _AuthService_Logout_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_CreateAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).CreateAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_CreateAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).CreateAdmin(ctx, req.(*CreateAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -183,6 +217,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Logout",
 			Handler:    _AuthService_Logout_Handler,
+		},
+		{
+			MethodName: "CreateAdmin",
+			Handler:    _AuthService_CreateAdmin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

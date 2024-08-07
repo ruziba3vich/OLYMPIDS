@@ -17,7 +17,7 @@ type (
 	}
 )
 
-func New(storage repository.IAuthRepo, logger  *slog.Logger) *Service {
+func New(storage repository.IAuthRepo, logger *slog.Logger) *Service {
 	return &Service{
 		storage: storage,
 		logger:  logger,
@@ -37,4 +37,9 @@ func (s *Service) Login(ctx context.Context, in *pb.LoginRequest) (*pb.LoginResp
 func (s *Service) Logout(ctx context.Context, in *pb.LogoutRequest) (*pb.LogoutResponse, error) {
 	s.logger.Info("Logout function was invoked", slog.String("request", in.String()))
 	return s.storage.Logout(ctx, in)
+}
+
+func (s *Service) CreateAdmin(ctx context.Context, in *pb.CreateAdminRequest) (*pb.CreateAdminResponse, error) {
+	s.logger.Info("CreateAdmin function was invoked", slog.String("request", in.String()))
+	return s.storage.CreateAdmin(ctx, in)
 }

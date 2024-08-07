@@ -179,6 +179,31 @@ func (s *Storage) Logout(ctx context.Context, in *pb.LogoutRequest) (*pb.LogoutR
 	}, nil
 }
 
+func (s *Storage) CreateAdmin(ctx context.Context, in *pb.CreateAdminRequest) (*pb.CreateAdminResponse, error) {
+	updated_at := time.Now()
+
+	query, args, err := s.queryBuilder.Update("users").
+		Set("role", "admin").
+		Set("updated_at", updated_at).
+		Where(sq.Eq{"id": in.UserId}).
+		Where("deleted_at IS NULL").
+		ToSql()
+	if err != nil {
+		s.logger.Error("Error while building a query")
+		return nil, err
+	}
+
+	_, err = s.postgres.ExecContext(ctx, query, args...)
+	if err != nil {
+		s.logger.Error("Error while executing a query")
+		return nil, err
+	}
+
+	return &pb.CreateAdminResponse{
+		Message: "Admin created successfully",
+	}, nil
+}
+
 func hashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
