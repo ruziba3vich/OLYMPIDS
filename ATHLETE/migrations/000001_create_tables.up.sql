@@ -4,6 +4,7 @@ CREATE TABLE athletes (
     last_name VARCHAR(255),
     gender VARCHAR(50),
     nationality VARCHAR(255),
+    country VARCHAR(255),
     height VARCHAR(50),
     weight VARCHAR(50),
     sport VARCHAR(255),
