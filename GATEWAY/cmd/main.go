@@ -4,6 +4,9 @@ import (
 	"log"
 	"log/slog"
 	"os"
+	"path/filepath"
+
+	casbin "github.com/casbin/casbin/v2"
 
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/config"
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/http/app"
@@ -31,7 +34,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	modelPath := filepath.Join("internal", "items", "casbin", "model.conf")
+	policyPath := filepath.Join("internal", "items", "casbin", "policy.csv")
+
+	enforcer, err := casbin.NewEnforcer(modelPath, policyPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	handler := handler.New(redisservice.New(redis, logger), logger)
 
-	log.Fatal(app.Run(handler, logger, config))
+	log.Fatal(app.Run(handler, logger, config, enforcer))
 }
