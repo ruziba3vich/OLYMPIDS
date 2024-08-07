@@ -7,3 +7,6 @@
 [submodule "AUTH/olympy-protos"]
 	path = AUTH/olympy-protos
 	url = git@github.com:Javohir-A/olympy-protos.git
+[submodule "EVENT/olympy-protos"]
+	path = EVENT/olympy-protos
+	url = git@github.com:Javohir-A/olympy-protos.git
