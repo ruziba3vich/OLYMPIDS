@@ -11,6 +11,7 @@ type (
 		Server        ServerConfig
 		Database      DatabaseConfig
 		Redis         RedisConfig
+		RabbitMQ      RabbitMQConfig
 		TableName     string
 		BookId        string
 		Title         string
@@ -30,6 +31,9 @@ type (
 	RedisConfig struct {
 		Host string
 		Port string
+	}
+	RabbitMQConfig struct {
+		RabbitMQ string
 	}
 )
 
@@ -51,6 +55,7 @@ func (c *Config) Load() error {
 	c.Title = os.Getenv("TITLE")
 	c.Author = os.Getenv("AUTHOR")
 	c.PublisherYear = os.Getenv("PUB_YEAR")
+	c.RabbitMQ.RabbitMQ = os.Getenv("RABBITMQ_URI")
 
 	return nil
 }

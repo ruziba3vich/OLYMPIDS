@@ -1,0 +1,35 @@
+{"time":"2024-08-07T23:59:57.005925745+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-07T23:59:57.006142155+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-07T23:59:57.006185894+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-07T23:59:57.006209696+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-07T23:59:57.006341293+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:06:15.037739911+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:06:15.037932913+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:06:15.037968088+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:06:15.037993222+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-08T00:06:15.038012053+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:08:14.178914498+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:08:14.179279925+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:08:14.179278125+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:08:14.179301107+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-08T00:08:14.179413399+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:08:31.390316394+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:08:31.390555071+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-08T00:08:31.390572401+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:08:31.390604185+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:08:31.390672536+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:09:29.059289994+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:09:29.059515384+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-08T00:09:29.059536834+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:09:29.059541121+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:09:29.059714854+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:09:37.262164536+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:09:37.262404267+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:09:37.262414877+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:09:37.26242369+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-08T00:09:37.262541085+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:30:43.349514105+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:30:43.349719804+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:30:43.349767126+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:30:43.349793822+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"deletion"}
+{"time":"2024-08-08T00:30:43.349813173+05:00","level":"INFO","msg":"All consumers have stopped"}
