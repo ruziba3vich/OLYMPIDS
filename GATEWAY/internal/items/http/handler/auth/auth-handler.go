@@ -3,6 +3,7 @@ package auth
 import (
 	"log/slog"
 
+	"github.com/gin-gonic/gin"
 	pb "github.com/ruziba3vich/OLYMPIDS/GATEWAY/genproto/auth"
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/redisservice"
 )
@@ -21,4 +22,16 @@ func NewAthleteHandler(logger *slog.Logger, auth pb.AuthServiceClient, redis *re
 		logger: logger,
 		redis:  redis,
 	}
+}
+
+func (h *AuthHandler) Rigister(c *gin.Context) {
+
+}
+
+func (h *AuthHandler) Login(c *gin.Context) {
+
+}
+
+func (h *AuthHandler) Refresh(c *gin.Context) {
+
 }
