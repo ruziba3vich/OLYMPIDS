@@ -28,13 +28,13 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 		medals.DELETE("/:id", handler.MedalsRepo.DeleteMedalByID)
 	}
 
-	athletes := router.Group("athletes")
-	{
-		athletes.GET("", handler.AthleteRepo.GetAllAthletes)
-		athletes.GET("/:id", handler.AthleteRepo.GetAthleteByID)
-		athletes.POST("", handler.AthleteRepo.CreateAthlete)
-		athletes.PUT("/:id", handler.AthleteRepo.UpdateAthleteByID)
-		athletes.DELETE("/:id", handler.AthleteRepo.DeleteAthleteByID)
-	}
+	// athletes := router.Group("athletes")
+	// {
+	// 	athletes.GET("", handler.AthleteRepo.GetAllAthletes)
+	// 	athletes.GET("/:id", handler.AthleteRepo.GetAthleteByID)
+	// 	athletes.POST("", handler.AthleteRepo.CreateAthlete)
+	// 	athletes.PUT("/:id", handler.AthleteRepo.UpdateAthleteByID)
+	// 	athletes.DELETE("/:id", handler.AthleteRepo.DeleteAthleteByID)
+	// }
 	return router.Run(config.Server.ServerPort)
 }
