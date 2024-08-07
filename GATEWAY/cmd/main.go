@@ -42,7 +42,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	handler := handler.New(redisservice.New(redis, logger), logger)
+	handler := handler.New(redisservice.New(redis, logger), logger, config)
 
 	log.Fatal(app.Run(handler, logger, config, enforcer))
 }
