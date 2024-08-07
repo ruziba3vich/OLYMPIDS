@@ -66,7 +66,7 @@ func main() {
 	}
 	defer ch.Close()
 
-	regQueue, err := getQueue(ch, "register")
+	regQueue, err := getQueue(ch, "register_user")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	updQueue, err := getQueue(ch, "update")
+	updQueue, err := getQueue(ch, "update_user")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,7 +84,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	delQueue, err := getQueue(ch, "delete")
+	delQueue, err := getQueue(ch, "delete_user")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -93,7 +93,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	setQueue, err := getQueue(ch, "setadmin")
+	setQueue, err := getQueue(ch, "set_admin")
 	if err != nil {
 		log.Fatal(err)
 	}

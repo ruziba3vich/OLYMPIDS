@@ -66,7 +66,7 @@ func main() {
 	}
 	defer ch.Close()
 
-	crtQueue, err := getQueue(ch, "create")
+	crtQueue, err := getQueue(ch, "create_athlete")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	updQueue, err := getQueue(ch, "update")
+	updQueue, err := getQueue(ch, "update_athlete")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,7 +84,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	delQueue, err := getQueue(ch, "delete")
+	delQueue, err := getQueue(ch, "delete_athlete")
 	if err != nil {
 		log.Fatal(err)
 	}

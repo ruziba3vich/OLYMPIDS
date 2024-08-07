@@ -76,7 +76,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 			var err error
 
 			switch logPrefix {
-			case "create":
+			case "create_athlete":
 				var req genprotos.CreateAthleteRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)
@@ -84,7 +84,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 					continue
 				}
 				response, err = m.service.CreateAthlete(ctx, &req)
-			case "update":
+			case "update_athlete":
 				var req genprotos.UpdateAthleteRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)
@@ -92,7 +92,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 					continue
 				}
 				response, err = m.service.UpdateAthlete(ctx, &req)
-			case "delete":
+			case "delete_athlete":
 				var req genprotos.DeleteAthleteRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)

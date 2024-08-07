@@ -79,7 +79,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 			var err error
 
 			switch logPrefix {
-			case "register":
+			case "register_user":
 				var req genprotos.RegisterRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)
@@ -87,7 +87,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 					continue
 				}
 				response, err = m.service.Register(ctx, &req)
-			case "setadmin":
+			case "set_admin":
 				var req genprotos.CreateAdminRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)
@@ -95,7 +95,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 					continue
 				}
 				response, err = m.service.CreateAdmin(ctx, &req)
-			case "update":
+			case "update_user":
 				var req genprotos.UpdateUserRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)
@@ -103,7 +103,7 @@ func (m *MsgBroker) consumeMessages(ctx context.Context, messages <-chan amqp.De
 					continue
 				}
 				response, err = m.service.UpdateUser(ctx, &req)
-			case "delete":
+			case "delete_user":
 				var req genprotos.DeleteUserRequest
 				if err := json.Unmarshal(val.Body, &req); err != nil {
 					m.logger.Error("Error while unmarshaling data", "error", err)
