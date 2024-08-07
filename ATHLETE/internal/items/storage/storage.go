@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/google/uuid"
@@ -22,10 +22,10 @@ type Storage struct {
 	postgres     *sql.DB
 	queryBuilder sq.StatementBuilderType
 	cfg          *config.Config
-	logger       *log.Logger
+	logger       *slog.Logger
 }
 
-func New(redis *redisservice.RedisService, postgres *sql.DB, queryBuilder sq.StatementBuilderType, cfg *config.Config, logger *log.Logger) repository.IAthleteRepo {
+func New(redis *redisservice.RedisService, postgres *sql.DB, queryBuilder sq.StatementBuilderType, cfg *config.Config, logger *slog.Logger) repository.IAthleteRepo {
 	return &Storage{
 		redis:        redis,
 		postgres:     postgres,
@@ -38,6 +38,14 @@ func New(redis *redisservice.RedisService, postgres *sql.DB, queryBuilder sq.Sta
 func (s *Storage) CreateAthlete(ctx context.Context, in *pb.CreateAthleteRequest) (*pb.Athlete, error) {
 	id := uuid.New().String()
 	createdAt := time.Now()
+
+	tx, err := s.postgres.BeginTx(ctx, nil)
+	if err != nil {
+		s.logger.Error("Error while starting a transaction")
+		return nil, err
+	}
+	defer tx.Rollback()
+
 	query, args, err := s.queryBuilder.Insert("athletes").
 		Columns(
 			"id",
@@ -63,13 +71,13 @@ func (s *Storage) CreateAthlete(ctx context.Context, in *pb.CreateAthleteRequest
 		createdAt,
 	).ToSql()
 	if err != nil {
-		s.logger.Println("Error generating SQL:", err)
+		s.logger.Error("Error generating SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	_, err = s.postgres.Exec(query, args...)
 	if err != nil {
-		s.logger.Println("Error executing SQL:", err)
+		s.logger.Error("Error executing SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -87,7 +95,13 @@ func (s *Storage) CreateAthlete(ctx context.Context, in *pb.CreateAthleteRequest
 
 	// Store athlete in Redis
 	if _, err := s.redis.StoreAthleteInRedis(ctx, athlete); err != nil {
-		s.logger.Println("Error storing athlete in Redis:", err)
+		s.logger.Error("Error storing athlete in Redis:", slog.String("err: ", err.Error()))
+		return nil, err
+	}
+
+	if err := tx.Commit(); err != nil {
+		s.logger.Error("Error while committing transaction:", slog.String("err: ", err.Error()))
+		return nil, err
 	}
 
 	return athlete, nil
@@ -97,10 +111,11 @@ func (s *Storage) GetAthlete(ctx context.Context, in *pb.GetAthleteRequest) (*pb
 	// Try to get athlete from Redis
 	athlete, err := s.redis.GetAthleteFromRedis(ctx, in.Id)
 	if err != nil {
-		s.logger.Println("Error getting athlete from Redis:", err)
+		s.logger.Error("Error getting athlete from Redis:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 	if athlete != nil {
+		s.logger.Info("Athlete found in Redis")
 		return athlete, nil
 	}
 
@@ -121,7 +136,7 @@ func (s *Storage) GetAthlete(ctx context.Context, in *pb.GetAthleteRequest) (*pb
 		Where("deleted_at IS NULL").
 		ToSql()
 	if err != nil {
-		s.logger.Println("Error generating SQL:", err)
+		s.logger.Error("Error generating SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -141,9 +156,10 @@ func (s *Storage) GetAthlete(ctx context.Context, in *pb.GetAthleteRequest) (*pb
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			s.logger.Error("Athlete not found")
 			return nil, fmt.Errorf("athlete not found")
 		}
-		s.logger.Println("Error scanning row:", err)
+		s.logger.Error("Error executing SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -151,7 +167,7 @@ func (s *Storage) GetAthlete(ctx context.Context, in *pb.GetAthleteRequest) (*pb
 
 	// Store athlete in Redis
 	if _, err := s.redis.StoreAthleteInRedis(ctx, athlete); err != nil {
-		s.logger.Println("Error storing athlete in Redis:", err)
+		s.logger.Error("Error storing athlete in Redis:", slog.String("err: ", err.Error()))
 	}
 
 	return athlete, nil
@@ -161,7 +177,7 @@ func (s *Storage) UpdateAthlete(ctx context.Context, in *pb.UpdateAthleteRequest
 	updated_at := time.Now()
 	tx, err := s.postgres.BeginTx(ctx, nil)
 	if err != nil {
-		s.logger.Println("Error while starting a transaction")
+		s.logger.Error("Error while starting a transaction")
 		return nil, err
 	}
 	defer tx.Rollback()
@@ -195,19 +211,19 @@ func (s *Storage) UpdateAthlete(ctx context.Context, in *pb.UpdateAthleteRequest
 
 	query, args, err := queryBuilder.ToSql()
 	if err != nil {
-		s.logger.Println("Error generating SQL:", err)
+		s.logger.Error("Error generating SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	result, err := s.postgres.ExecContext(ctx, query, args...)
 	if err != nil {
-		s.logger.Println("Error executing SQL:", err)
+		s.logger.Error("Error executing SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		s.logger.Println(err)
+		s.logger.Error("Error getting rows affected:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 	if rowsAffected == 0 {
@@ -221,11 +237,12 @@ func (s *Storage) UpdateAthlete(ctx context.Context, in *pb.UpdateAthleteRequest
 
 	// Update athlete in Redis
 	if _, err := s.redis.StoreAthleteInRedis(ctx, athlete); err != nil {
-		s.logger.Println("Error storing athlete in Redis:", err)
+		s.logger.Error("Error storing athlete in Redis:", slog.String("err: ", err.Error()))
+		return nil, err
 	}
 
 	if err := tx.Commit(); err != nil {
-		s.logger.Println("Error while committing transaction:", err.Error())
+		s.logger.Error("Error while committing transaction:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -236,6 +253,7 @@ func (s *Storage) DeleteAthlete(ctx context.Context, in *pb.DeleteAthleteRequest
 	deleted_at := time.Now()
 	athlete, err := s.GetAthlete(ctx, &pb.GetAthleteRequest{Id: in.Id})
 	if err != nil {
+		s.logger.Error("Error getting athlete:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -245,19 +263,20 @@ func (s *Storage) DeleteAthlete(ctx context.Context, in *pb.DeleteAthleteRequest
 		Set("deleted_at", deleted_at).
 		ToSql()
 	if err != nil {
-		s.logger.Println("Error generating SQL:", err)
+		s.logger.Error("Error generating SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	_, err = s.postgres.Exec(query, args...)
 	if err != nil {
-		s.logger.Println("Error executing SQL:", err)
+		s.logger.Error("Error executing SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	// Delete athlete from Redis
 	if err := s.redis.DeleteAthleteFromRedis(ctx, in.Id); err != nil {
-		s.logger.Println("Error deleting athlete from Redis:", err)
+		s.logger.Error("Error deleting athlete from Redis:", slog.String("err: ", err.Error()))
+		return nil, err
 	}
 
 	return athlete, nil
@@ -281,13 +300,13 @@ func (s *Storage) GetAthleteBySport(ctx context.Context, in *pb.GetAthleteBySpor
 		Offset(uint64((in.Page - 1) * in.Limit)).
 		ToSql()
 	if err != nil {
-		s.logger.Println("Error generating SQL:", err)
+		s.logger.Error("Error generating SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	rows, err := s.postgres.Query(query, args...)
 	if err != nil {
-		s.logger.Println("Error executing SQL:", err)
+		s.logger.Error("Error executing SQL:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 	defer rows.Close()
@@ -308,7 +327,7 @@ func (s *Storage) GetAthleteBySport(ctx context.Context, in *pb.GetAthleteBySpor
 			&createdAt,
 		)
 		if err != nil {
-			s.logger.Println("Error scanning row:", err)
+			s.logger.Error("Error scanning row:", slog.String("err: ", err.Error()))
 			return nil, err
 		}
 
@@ -317,12 +336,13 @@ func (s *Storage) GetAthleteBySport(ctx context.Context, in *pb.GetAthleteBySpor
 
 		// Store each athlete in Redis
 		if _, err := s.redis.StoreAthleteInRedis(ctx, athlete); err != nil {
-			s.logger.Println("Error storing athlete in Redis:", err)
+			s.logger.Error("Error storing athlete in Redis:", slog.String("err: ", err.Error()))
+			return nil, err
 		}
 	}
 
 	if err = rows.Err(); err != nil {
-		s.logger.Println("Error iterating over rows:", err)
+		s.logger.Error("Error iterating over rows:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 

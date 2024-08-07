@@ -4,3 +4,6 @@
 [submodule "ATHLETE/olympy-protos"]
 	path = ATHLETE/olympy-protos
 	url = git@github.com:Javohir-A/olympy-protos.git
+[submodule "AUTH/olympy-protos"]
+	path = AUTH/olympy-protos
+	url = git@github.com:Javohir-A/olympy-protos.git

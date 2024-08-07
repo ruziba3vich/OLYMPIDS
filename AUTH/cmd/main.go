@@ -6,12 +6,12 @@ import (
 	"os"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/api"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/config"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/redisservice"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/service"
-	"github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/items/storage"
-	redisCl "github.com/ruziba3vich/OLYMPIDS/ATHLETE/internal/pkg/redis"
+	"github.com/ruziba3vich/OLYMPIDS/AUTH/api"
+	"github.com/ruziba3vich/OLYMPIDS/AUTH/internal/items/config"
+	"github.com/ruziba3vich/OLYMPIDS/AUTH/internal/items/redisservice"
+	"github.com/ruziba3vich/OLYMPIDS/AUTH/internal/items/service"
+	"github.com/ruziba3vich/OLYMPIDS/AUTH/internal/items/storage"
+	redisCl "github.com/ruziba3vich/OLYMPIDS/AUTH/internal/pkg/redis"
 )
 
 func main() {

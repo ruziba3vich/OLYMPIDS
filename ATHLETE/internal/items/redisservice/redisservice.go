@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	pb "github.com/ruziba3vich/OLYMPIDS/ATHLETE/genproto/athlete"
@@ -15,11 +15,11 @@ import (
 type (
 	RedisService struct {
 		redisDb *redis.Client
-		logger  *log.Logger
+		logger  *slog.Logger
 	}
 )
 
-func New(redisDb *redis.Client, logger *log.Logger) *RedisService {
+func New(redisDb *redis.Client, logger *slog.Logger) *RedisService {
 	return &RedisService{
 		logger:  logger,
 		redisDb: redisDb,
@@ -30,12 +30,12 @@ func (r *RedisService) StoreAthleteInRedis(ctx context.Context, athlete *pb.Athl
 	key := fmt.Sprintf("athlete:%s", athlete.Id)
 	athleteJSON, err := json.Marshal(athlete)
 	if err != nil {
-		r.logger.Println("Error marshalling athlete:", err)
+		r.logger.Error("Error marshalling athlete:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	if err := r.redisDb.Set(ctx, key, athleteJSON, 10*time.Minute).Err(); err != nil {
-		r.logger.Println("Error setting athlete in Redis:", err)
+		r.logger.Error("Error setting athlete in Redis:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -49,13 +49,13 @@ func (r *RedisService) GetAthleteFromRedis(ctx context.Context, id string) (*pb.
 		// Athlete not found in cache
 		return nil, nil
 	} else if err != nil {
-		r.logger.Println("Error getting athlete from Redis:", err)
+		r.logger.Error("Error getting athlete from Redis:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
 	var athlete pb.Athlete
 	if err := json.Unmarshal([]byte(val), &athlete); err != nil {
-		r.logger.Println("Error unmarshalling athlete:", err)
+		r.logger.Error("Error unmarshalling athlete:", slog.String("err: ", err.Error()))
 		return nil, err
 	}
 
@@ -65,7 +65,7 @@ func (r *RedisService) GetAthleteFromRedis(ctx context.Context, id string) (*pb.
 func (r *RedisService) DeleteAthleteFromRedis(ctx context.Context, id string) error {
 	key := fmt.Sprintf("athlete:%s", id)
 	if err := r.redisDb.Del(ctx, key).Err(); err != nil {
-		r.logger.Println("Error deleting athlete from Redis:", err)
+		r.logger.Error("Error deleting athlete from Redis:", slog.String("err: ", err.Error()))
 		return err
 	}
 
