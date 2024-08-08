@@ -53,3 +53,8 @@ func (s *Service) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb
 	s.logger.Info("DeleteUser function was invoked", slog.String("request", in.String()))
 	return s.storage.DeleteUser(ctx, in)
 }
+
+func (s *Service) GetUserByEmail(ctx context.Context, in *pb.GetUserByEmailRequest) (*pb.RegisterResponse, error) {
+	s.logger.Info("GetUserByEmail function was invoked", slog.String("request", in.String()))
+	return s.storage.GetUserByEmail(ctx, in)
+}

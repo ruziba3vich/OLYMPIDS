@@ -18,3 +18,6 @@ migrate_force:
 
 migrate_file:
 	migrate create -ext sql -dir migrations -seq create_tables
+
+swag_init:
+	swag init -g internal/items/http/app/app.go --parseDependency -o internal/items/http/app/docs

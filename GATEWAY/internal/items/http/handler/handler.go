@@ -11,6 +11,8 @@ import (
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/config"
 	athlete_broker "github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/msgbroker/athlete"
 	auth_broker "github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/msgbroker/auth"
+	event_broker "github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/msgbroker/event"
+	medal_broker "github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/msgbroker/medal"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/http/handler/athlete"
@@ -42,8 +44,8 @@ func connect(port string) *grpc.ClientConn {
 func New(redis *redisservice.RedisService, logger *slog.Logger, config *config.Config, channel *amqp.Channel) *Handler {
 	athleteClient := athlete.NewAthleteHandler(logger, athlete_pb.NewAthleteServiceClient(connect(config.Server.AthletePort)), redis, athlete_broker.NewAthleteMsgBroker(channel, logger))
 	authClient := auth.NewAthleteHandler(logger, auth_pb.NewAuthServiceClient(connect(config.Server.AuthPort)), redis, auth_broker.NewAthleteMsgBroker(channel, logger))
-	eventClient := event.NewAthleteHandler(logger, event_pb.NewEventServiceClient(connect(config.Server.EventPort)), redis)
-	medalsClient := medals.NewAthleteHandler(logger, medals_pb.NewMedalServiceClient(connect(config.Server.MedalPort)), redis)
+	eventClient := event.NewEventHandler(logger, event_pb.NewEventServiceClient(connect(config.Server.EventPort)), redis, event_broker.NewEventMsgBroker(channel, logger))
+	medalsClient := medals.NewAthleteHandler(logger, medals_pb.NewMedalServiceClient(connect(config.Server.MedalPort)), redis, medal_broker.NewMedalMsgBroker(channel, logger))
 
 	return &Handler{
 		AthleteRepo: athleteClient,

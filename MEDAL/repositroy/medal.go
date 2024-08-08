@@ -15,4 +15,5 @@ type MedalRepository interface {
 	GetMedalsByAthlete(ctx context.Context, athlete string) ([]*models.Medal, error)
 	UpdateMedal(ctx context.Context, medal *models.UpdateMedal) (*models.Medal, error)
 	ListMedals(ctx context.Context, page, limit int32, sortOrder, typefilter string) ([]*models.Medal, error)
+	// GetTopCountries(ctx context.Context, limit int) ([]*models.CountryRanking, error)
 }

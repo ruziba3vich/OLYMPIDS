@@ -1,0 +1,996 @@
+basePath: /
+definitions:
+  gin.H:
+    additionalProperties: {}
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_athlete.Athlete:
+    properties:
+      country:
+        type: string
+      created_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      date_of_birth:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      deleted_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      first_name:
+        type: string
+      gender:
+        type: string
+      height:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      nationality:
+        type: string
+      sport:
+        type: string
+      updated_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      weight:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_athlete.CreateAthleteRequest:
+    properties:
+      country:
+        type: string
+      date_of_birth:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      first_name:
+        type: string
+      gender:
+        type: string
+      height:
+        type: string
+      last_name:
+        type: string
+      nationality:
+        type: string
+      sport:
+        type: string
+      weight:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_athlete.UpdateAthleteRequest:
+    properties:
+      country:
+        type: string
+      date_of_birth:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      first_name:
+        type: string
+      gender:
+        type: string
+      height:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      nationality:
+        type: string
+      sport:
+        type: string
+      weight:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.CreateAdminRequest:
+    properties:
+      user_id:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.DeleteUserRequest:
+    properties:
+      user_id:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest:
+    properties:
+      user_id:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterResponse:
+    properties:
+      user_id:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      is_active:
+        type: boolean
+      password:
+        type: string
+      role:
+        type: string
+      user_id:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.CreateEventRequest:
+    properties:
+      created_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      description:
+        type: string
+      end_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      location:
+        type: string
+      name:
+        type: string
+      sport_type:
+        type: string
+      start_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event:
+    properties:
+      created_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      description:
+        type: string
+      end_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      sport_type:
+        type: string
+      start_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportRequest:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      sport:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportResponse:
+    properties:
+      events:
+        items:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event'
+        type: array
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.UpdateEventRequest:
+    properties:
+      description:
+        type: string
+      end_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      sport_type:
+        type: string
+      start_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      updated_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.CreateMedalRequest:
+    properties:
+      athlete_id:
+        type: string
+      country:
+        type: string
+      description:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.GetMedalResponse:
+    properties:
+      medal:
+        $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.Medal'
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.Medal:
+    properties:
+      athlete_id:
+        type: string
+      country:
+        type: string
+      created_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      description:
+        type: string
+      id:
+        type: string
+      type:
+        type: string
+      updated_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.UpdateMedalRequest:
+    properties:
+      athlete_id:
+        type: string
+      country:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  timestamppb.Timestamp:
+    properties:
+      nanos:
+        description: |-
+          Non-negative fractions of a second at nanosecond resolution. Negative
+          second values with fractions must still have non-negative nanos values
+          that count forward in time. Must be from 0 to 999,999,999
+          inclusive.
+        type: integer
+      seconds:
+        description: |-
+          Represents seconds of UTC time since Unix epoch
+          1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+          9999-12-31T23:59:59Z inclusive.
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API Endpoints for LocalEats
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Olympy API
+  version: "1.0"
+paths:
+  /admin/athletes:
+    post:
+      consumes:
+      - application/json
+      description: Create a new athlete record
+      parameters:
+      - description: Athlete data
+        in: body
+        name: athlete
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_athlete.CreateAthleteRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create a new athlete
+      tags:
+      - Admin Athletes
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing athlete record
+      parameters:
+      - description: Athlete data
+        in: body
+        name: athlete
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_athlete.UpdateAthleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update an existing athlete
+      tags:
+      - Admin Athletes
+  /admin/athletes/{id}:
+    delete:
+      description: Delete an athlete record by its ID
+      parameters:
+      - description: Athlete ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete an athlete by ID
+      tags:
+      - Admin Athletes
+    get:
+      description: Retrieve an athlete record by its ID
+      parameters:
+      - description: Athlete ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Athlete record
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_athlete.Athlete'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get an athlete by ID
+      tags:
+      - Admin Athletes
+  /admin/auth/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a user by admin
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Delete User Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.DeleteUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete user
+      tags:
+      - Admin Auth
+  /admin/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in an admin user with email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Admin login
+      tags:
+      - Admin Auth
+  /admin/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Log out an admin user by their ID
+      parameters:
+      - description: Logout Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Admin logout
+      tags:
+      - Admin Auth
+  /admin/auth/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update a user's information by admin
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update User Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update user
+      tags:
+      - Admin Auth
+  /admin/events/:
+    post:
+      consumes:
+      - application/json
+      description: Create a new event by providing the event details
+      parameters:
+      - description: Event details
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create a new event
+      tags:
+      - Admin Events
+  /admin/events/{id}:
+    delete:
+      description: Delete an event by providing the event ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete an event
+      tags:
+      - Admin Events
+    get:
+      description: Retrieve an event by providing the event ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Event details
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get an event by ID
+      tags:
+      - Admin Events
+    put:
+      consumes:
+      - application/json
+      description: Update an event by providing the event ID and details
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Event details
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.UpdateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update an existing event
+      tags:
+      - Admin Events
+  /admin/events/sport:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve events based on the sport by providing sport details
+      parameters:
+      - description: Sport details
+        in: body
+        name: sport
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of events
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get events by sport
+      tags:
+      - Admin Events
+  /admin/medals/:
+    post:
+      consumes:
+      - application/json
+      description: Create a new medal with the provided details
+      parameters:
+      - description: Medal details
+        in: body
+        name: medal
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.CreateMedalRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create a new medal
+      tags:
+      - Admin Medals
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing medal
+      parameters:
+      - description: Updated medal details
+        in: body
+        name: medal
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.UpdateMedalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a medal
+      tags:
+      - Admin Medals
+  /admin/medals/{id}:
+    delete:
+      description: Remove a medal using its ID
+      parameters:
+      - description: Medal ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a medal by ID
+      tags:
+      - Admin Medals
+    get:
+      description: Retrieve the details of a medal using its ID
+      parameters:
+      - description: Medal ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.GetMedalResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a medal by ID
+      tags:
+      - Admin Medals
+  /superadmin/createadmin:
+    post:
+      consumes:
+      - application/json
+      description: Create a new admin user by a super admin
+      parameters:
+      - description: Create Admin Request
+        in: body
+        name: createAdminRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.CreateAdminRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Admin
+      tags:
+      - Super Admin
+  /superadmin/login:
+    post:
+      consumes:
+      - application/json
+      description: Login as a super admin
+      parameters:
+      - description: Login Request
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Super Admin Login
+      tags:
+      - Super Admin
+  /superadmin/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout from a super admin session
+      parameters:
+      - description: Logout Request
+        in: body
+        name: logoutRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Super Admin Logout
+      tags:
+      - Super Admin
+  /user/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in a user with email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: User login
+      tags:
+      - User Auth
+  /user/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Log out a user by their ID
+      parameters:
+      - description: Logout Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: User logout
+      tags:
+      - User Auth
+  /user/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with an email and password
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Register a new user
+      tags:
+      - User Auth
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
