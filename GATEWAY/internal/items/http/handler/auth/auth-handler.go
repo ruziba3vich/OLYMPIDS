@@ -38,7 +38,7 @@ func NewAthleteHandler(logger *slog.Logger, auth pb.AuthServiceClient, redis *re
 // @Success 201 {object} pb.RegisterResponse
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /user/auth/register [post]
+// @Router /auth/user/register [post]
 func (h *AuthHandler) RegisterHandler(c *gin.Context) {
 	h.logger.Info("RegisterHandler called")
 	var req pb.RegisterRequest
@@ -77,7 +77,7 @@ func (h *AuthHandler) RegisterHandler(c *gin.Context) {
 // @Success 200 {object} pb.LoginResponse
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /user/auth/login [post]
+// @Router /auth/user/login [post]
 func (h *AuthHandler) LoginHandler(c *gin.Context) {
 	h.logger.Info("LoginHandler called")
 	var req pb.LoginRequest
@@ -105,7 +105,7 @@ func (h *AuthHandler) LoginHandler(c *gin.Context) {
 // @Success 200 {object} pb.LogoutResponse
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /user/auth/logout [post]
+// @Router /auth/user/logout [post]
 func (h *AuthHandler) LogoutHandler(c *gin.Context) {
 	h.logger.Info("LogoutHandler called")
 	var req pb.LogoutRequest
@@ -133,7 +133,7 @@ func (h *AuthHandler) LogoutHandler(c *gin.Context) {
 // @Success 200 {object} pb.LoginResponse
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /admin/auth/login [post]
+// @Router /auth/admin/login [post]
 func (h *AuthHandler) AdminLoginHandler(c *gin.Context) {
 	h.logger.Info("AdminLoginHandler called")
 	var req pb.LoginRequest
@@ -161,7 +161,7 @@ func (h *AuthHandler) AdminLoginHandler(c *gin.Context) {
 // @Success 200 {object} pb.LogoutResponse
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /admin/auth/logout [post]
+// @Router /auth/admin/logout [post]
 func (h *AuthHandler) AdminLogoutHandler(c *gin.Context) {
 	h.logger.Info("AdminLogoutHandler called")
 	var req pb.LogoutRequest
