@@ -213,9 +213,9 @@ func (m *MedalService) UpdateMedal(ctx context.Context, req *pb.UpdateMedalReque
 	}, nil
 }
 
-func (m *MedalService) RankingByCountry(ctx context.Context, req *pb.GetRankingByCountryRequest) (*pb.GetRankingResponse, error) {
-	ranking, err := m.repo.GetTopCountries(ctx, req.GetType())
-	if err != nil {
-		return nil, err
-	}
-}
+// func (m *MedalService) RankingByCountry(ctx context.Context, req *pb.GetRankingByCountryRequest) (*pb.GetRankingResponse, error) {
+// 	ranking, err := m.repo.GetTopCountries(ctx, req.GetType())
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// }
