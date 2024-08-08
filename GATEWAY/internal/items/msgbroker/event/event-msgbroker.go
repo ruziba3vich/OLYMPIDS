@@ -20,15 +20,15 @@ func NewEventMsgBroker(channel *amqp.Channel, logger *slog.Logger) *EventMsgBrok
 	}
 }
 
-func (b *EventMsgBroker) CreateAthlete(body []byte) error {
+func (b *EventMsgBroker) CreateEvent(body []byte) error {
 	return b.publishMessage("create_event", body)
 }
 
-func (b *EventMsgBroker) UpdateAthlete(body []byte) error {
+func (b *EventMsgBroker) UpdateEvent(body []byte) error {
 	return b.publishMessage("update_event", body)
 }
 
-func (b *EventMsgBroker) DeleteAthlete(body []byte) error {
+func (b *EventMsgBroker) DeleteEvent(body []byte) error {
 	return b.publishMessage("delete_event", body)
 }
 
