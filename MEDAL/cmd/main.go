@@ -40,7 +40,7 @@ func main() {
 	// redisImp := redisstorage.NewMedalRedisImpl(redisClient)
 	postgresImp := postgres.NewMedalPostgres(sqrl, postgresConn, redisClient, countryMedals)
 
-	service := service.NewMedalService(postgresImp)
+	service := service.NewMedalService(postgresImp, *countryMedals)
 
 	listener, err := net.Listen("tcp", cnf.Server.Port)
 	if err != nil {

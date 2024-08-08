@@ -48,14 +48,15 @@ func (c *CountryMedals) GetCountryMedals(ctx context.Context, country string) (*
 }
 
 func (c *CountryMedals) GetTopCountries(ctx context.Context, limit int) ([]*models.CountryRanking, error) {
-	// cacheKey := fmt.Sprintf("top_countries:%d", limit)
-	// cachedData, err := c.redis.Get(ctx, cacheKey).Result()
-	// if err == nil {
-	// 	var countryRankings []*models.CountryRanking
-	// 	if err := json.Unmarshal([]byte(cachedData), &countryRankings); err == nil {
-	// 		return countryRankings, err
-	// 	}
+	// Debugging: Check if queryBuilder is initialized
+	// if c.queryBuilder == nil {
+	// 	return nil, fmt.Errorf("queryBuilder is not initialized")
 	// }
+
+	// Debugging: Check if db is initialized
+	if c.db == nil {
+		return nil, fmt.Errorf("db is not initialized")
+	}
 
 	query := c.queryBuilder.Select("name",
 		"gold_count",
@@ -64,15 +65,19 @@ func (c *CountryMedals) GetTopCountries(ctx context.Context, limit int) ([]*mode
 		"(gold_count + silver_count + bronze_count) AS total_medals").
 		From("country_medals").
 		OrderBy("gold_count DESC", "silver_count DESC", "bronze_count DESC").
-		Limit(uint64(limit)).
-		RunWith(c.db)
+		Limit(uint64(limit))
 
-	rows, err := query.QueryContext(ctx)
+	sqlQuery, args, err := query.ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build SQL query: %w", err)
+	}
+
+	log.Println("Executing query:", sqlQuery, "with args:", args)
+	rows, err := c.db.QueryContext(ctx, sqlQuery, args...)
 	if err != nil {
 		log.Println("Error querying country")
 		return nil, err
 	}
-	log.Println(limit)
 	defer rows.Close()
 
 	var countryRankings []*models.CountryRanking
@@ -90,11 +95,6 @@ func (c *CountryMedals) GetTopCountries(ctx context.Context, limit int) ([]*mode
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-
-	// cacheData, err := json.Marshal(countryRankings)
-	// if err == nil {
-	// 	c.redis.Set(ctx, cacheKey, cacheData, time.Minute*10)
-	// }
 
 	return countryRankings, nil
 }

@@ -187,7 +187,7 @@ func (h *MedalsHandler) GetCountryRankings(c *gin.Context) {
 }
 
 // @Summary Get Medals by Time range
-// @Description Get Medals Rankings by Country
+// @Description Get Medals by Time
 // @Tags Admin Medals
 // @Produce json
 // @Param start query string true "start_time"

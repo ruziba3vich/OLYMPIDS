@@ -19,8 +19,10 @@ type MedalService struct {
 	countryMedals postgres.CountryMedals
 }
 
-func NewMedalService(repo repositroy.MedalRepository) *MedalService {
-	return &MedalService{repo: repo}
+func NewMedalService(repo repositroy.MedalRepository, c postgres.CountryMedals) *MedalService {
+	return &MedalService{
+		repo:          repo,
+		countryMedals: c}
 }
 
 func (m *MedalService) CreateMedal(ctx context.Context, req *pb.CreateMedalRequest) (*pb.Medal, error) {
