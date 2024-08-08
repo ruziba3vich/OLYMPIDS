@@ -80,6 +80,7 @@ func (s *StatisticsStorage) UpdateTeamStats(ctx context.Context, req *genproto.U
 	if err != nil {
 		return nil, err
 	}
+	
 	filter := bson.M{"team_id": req.TeamId}
 	if event.TeamEvent.Team1Id == req.TeamId {
 		filter["set"] = event.TeamEvent.Team1
