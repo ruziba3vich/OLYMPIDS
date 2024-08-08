@@ -10,6 +10,7 @@ type (
 	Config struct {
 		Server        ServerConfig
 		Database      DatabaseConfig
+		Mongosh       Mongosh
 		Redis         RedisConfig
 		TableName     string
 		BookId        string
@@ -30,6 +31,12 @@ type (
 	RedisConfig struct {
 		Host string
 		Port string
+	}
+
+	Mongosh struct {
+		MongoUri   string
+		MongoDb    string
+		Collection string
 	}
 )
 

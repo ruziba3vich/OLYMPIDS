@@ -71,3 +71,11 @@ func (r *RedisService) DeleteEventFromRedis(ctx context.Context, id string) erro
 
 	return nil
 }
+
+func (r *RedisService) GetEventById(ctx context.Context, id string) error {
+	key := fmt.Sprintf("event:%s", id)
+	if err := r.redisDb.Get(ctx, key).Err(); err != nil {
+		return err
+	}
+	return nil
+}
