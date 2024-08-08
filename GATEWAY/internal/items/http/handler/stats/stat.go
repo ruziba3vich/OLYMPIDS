@@ -29,9 +29,9 @@ func (s *StatsClient) CreateStatsHandler(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, err)
 		return
 	}
-	switch req.EventType {
-		case "team"
-	}
+	// switch req.EventType {
+	// 	case "team"
+	// }
 }
 
 // func (s *StatsClient) CreateTeamStats(ctx context.Context, in *stats.TeamEvent, opts ...grpc.CallOption) (*stats.TeamEvent, error)
