@@ -89,10 +89,10 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 
 		medals := admin.Group("medals")
 		{
-			medals.POST("/", handler.MedalsRepo.DeleteMedalHandler)
-			medals.GET("/:id", handler.MedalsRepo.GetMedalHandler)
-			medals.PUT("/", handler.MedalsRepo.UpdateMedalHandler)
-			medals.DELETE("/:id", handler.MedalsRepo.DeleteMedalHandler)
+			medals.GET("/ranking", handler.MedalsRepo.Ranking)
+			medals.GET("", handler.MedalsRepo.GetAllMedals)
+			medals.PUT("/:id", handler.MedalsRepo.UpdatesMedalByID)
+			medals.DELETE("/:id", handler.MedalsRepo.DeleteMedalByID)
 		}
 
 		athletes := admin.Group("athletes")
@@ -101,15 +101,6 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 			athletes.GET("/:id", handler.AthleteRepo.GetAthleteHandler)
 			athletes.PUT("/:id", handler.AthleteRepo.UpdateAthleteHandler)
 			athletes.DELETE("/:id", handler.AthleteRepo.DeleteAthleteHandler)
-		}
-
-		events := admin.Group("events")
-		{
-			events.POST("/", handler.EventRepo.CreateEventHandler)
-			events.GET("/:id", handler.EventRepo.GetEventHandler)
-			events.PUT("/:id", handler.EventRepo.UpdateEventHandler)
-			events.DELETE("/:id", handler.EventRepo.DeleteEventHandler)
-			events.GET("/sport", handler.EventRepo.GetEventBySportHandler)
 		}
 	}
 
