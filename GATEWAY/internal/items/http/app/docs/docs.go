@@ -404,6 +404,229 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/events/": {
+            "post": {
+                "description": "Create a new event by providing the event details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Events"
+                ],
+                "summary": "Create a new event",
+                "parameters": [
+                    {
+                        "description": "Event details",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.CreateEventRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/events/sport": {
+            "get": {
+                "description": "Retrieve events based on the sport by providing sport details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Events"
+                ],
+                "summary": "Get events by sport",
+                "parameters": [
+                    {
+                        "description": "Sport details",
+                        "name": "sport",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of events",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/events/{id}": {
+            "get": {
+                "description": "Retrieve an event by providing the event ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Events"
+                ],
+                "summary": "Get an event by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Event details",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an event by providing the event ID and details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Events"
+                ],
+                "summary": "Update an existing event",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Event details",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.UpdateEventRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an event by providing the event ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Events"
+                ],
+                "summary": "Delete an event",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/superadmin/createadmin": {
             "post": {
                 "description": "Create a new admin user by a super admin",
@@ -887,6 +1110,145 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.CreateEventRequest": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "$ref": "#/definitions/timestamppb.Timestamp"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "description": "Using string for simplicity, consider using Timestamp",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/timestamppb.Timestamp"
+                        }
+                    ]
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sport_type": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "description": "Using string for simplicity, consider using Timestamp",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/timestamppb.Timestamp"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "$ref": "#/definitions/timestamppb.Timestamp"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "description": "Using string for simplicity, consider using Timestamp",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/timestamppb.Timestamp"
+                        }
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sport_type": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "description": "Using string for simplicity, consider using Timestamp",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/timestamppb.Timestamp"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportRequest": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "sport": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportResponse": {
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event"
+                    }
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.UpdateEventRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "description": "Using string for simplicity, consider using Timestamp",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/timestamppb.Timestamp"
+                        }
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sport_type": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "description": "Using string for simplicity, consider using Timestamp",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/timestamppb.Timestamp"
+                        }
+                    ]
+                },
+                "updated_at": {
+                    "$ref": "#/definitions/timestamppb.Timestamp"
                 }
             }
         },

@@ -102,6 +102,15 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 			athletes.PUT("/:id", handler.AthleteRepo.UpdateAthleteHandler)
 			athletes.DELETE("/:id", handler.AthleteRepo.DeleteAthleteHandler)
 		}
+
+		events := admin.Group("events")
+		{
+			events.POST("/", handler.EventRepo.CreateEventHandler)
+			events.GET("/:id", handler.EventRepo.GetEventHandler)
+			events.PUT("/:id", handler.EventRepo.UpdateEventHandler)
+			events.DELETE("/:id", handler.EventRepo.DeleteEventHandler)
+			events.GET("/sport", handler.EventRepo.GetEventBySportHandler)
+		}
 	}
 
 	return router.Run(config.Server.ServerPort)

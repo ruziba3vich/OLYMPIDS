@@ -135,6 +135,89 @@ definitions:
       user_id:
         type: string
     type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.CreateEventRequest:
+    properties:
+      created_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      description:
+        type: string
+      end_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      location:
+        type: string
+      name:
+        type: string
+      sport_type:
+        type: string
+      start_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event:
+    properties:
+      created_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+      description:
+        type: string
+      end_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      sport_type:
+        type: string
+      start_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportRequest:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      sport:
+        type: string
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportResponse:
+    properties:
+      events:
+        items:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event'
+        type: array
+    type: object
+  github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.UpdateEventRequest:
+    properties:
+      description:
+        type: string
+      end_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      sport_type:
+        type: string
+      start_time:
+        allOf:
+        - $ref: '#/definitions/timestamppb.Timestamp'
+        description: Using string for simplicity, consider using Timestamp
+      updated_at:
+        $ref: '#/definitions/timestamppb.Timestamp'
+    type: object
   timestamppb.Timestamp:
     properties:
       nanos:
@@ -415,6 +498,153 @@ paths:
       summary: Update user
       tags:
       - Admin Auth
+  /admin/events/:
+    post:
+      consumes:
+      - application/json
+      description: Create a new event by providing the event details
+      parameters:
+      - description: Event details
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create a new event
+      tags:
+      - Admin Events
+  /admin/events/{id}:
+    delete:
+      description: Delete an event by providing the event ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete an event
+      tags:
+      - Admin Events
+    get:
+      description: Retrieve an event by providing the event ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Event details
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get an event by ID
+      tags:
+      - Admin Events
+    put:
+      consumes:
+      - application/json
+      description: Update an event by providing the event ID and details
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Event details
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.UpdateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update an existing event
+      tags:
+      - Admin Events
+  /admin/events/sport:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve events based on the sport by providing sport details
+      parameters:
+      - description: Sport details
+        in: body
+        name: sport
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of events
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_event.GetEventBySportResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get events by sport
+      tags:
+      - Admin Events
   /superadmin/createadmin:
     post:
       consumes:
