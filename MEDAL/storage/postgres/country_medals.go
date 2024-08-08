@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"time"
 
 	"medal-service/models"
@@ -27,6 +28,7 @@ func NewCountryMedals(queryBuilder sq.StatementBuilderType, db *sqlx.DB, redis *
 		redis:        redis,
 	}
 }
+
 func (c *CountryMedals) GetCountryMedals(ctx context.Context, country string) (*models.CountryMedals, error) {
 	query := c.queryBuilder.Select("name", "gold_count", "silver_count", "bronze_count").
 		From("country_medals").
@@ -46,14 +48,14 @@ func (c *CountryMedals) GetCountryMedals(ctx context.Context, country string) (*
 }
 
 func (c *CountryMedals) GetTopCountries(ctx context.Context, limit int) ([]*models.CountryRanking, error) {
-	cacheKey := fmt.Sprintf("top_countries:%d", limit)
-	cachedData, err := c.redis.Get(ctx, cacheKey).Result()
-	if err == nil {
-		var countryRankings []*models.CountryRanking
-		if err := json.Unmarshal([]byte(cachedData), &countryRankings); err == nil {
-			return countryRankings, nil
-		}
-	}
+	// cacheKey := fmt.Sprintf("top_countries:%d", limit)
+	// cachedData, err := c.redis.Get(ctx, cacheKey).Result()
+	// if err == nil {
+	// 	var countryRankings []*models.CountryRanking
+	// 	if err := json.Unmarshal([]byte(cachedData), &countryRankings); err == nil {
+	// 		return countryRankings, err
+	// 	}
+	// }
 
 	query := c.queryBuilder.Select("name",
 		"gold_count",
@@ -67,8 +69,10 @@ func (c *CountryMedals) GetTopCountries(ctx context.Context, limit int) ([]*mode
 
 	rows, err := query.QueryContext(ctx)
 	if err != nil {
+		log.Println("Error querying country")
 		return nil, err
 	}
+	log.Println(limit)
 	defer rows.Close()
 
 	var countryRankings []*models.CountryRanking
@@ -87,10 +91,10 @@ func (c *CountryMedals) GetTopCountries(ctx context.Context, limit int) ([]*mode
 		return nil, err
 	}
 
-	cacheData, err := json.Marshal(countryRankings)
-	if err == nil {
-		c.redis.Set(ctx, cacheKey, cacheData, time.Minute*10)
-	}
+	// cacheData, err := json.Marshal(countryRankings)
+	// if err == nil {
+	// 	c.redis.Set(ctx, cacheKey, cacheData, time.Minute*10)
+	// }
 
 	return countryRankings, nil
 }
@@ -101,8 +105,8 @@ func (c *CountryMedals) CreateOrUpdate(ctx context.Context, country string, meda
 		Where(sq.Eq{"name": country}).
 		RunWith(c.db).
 		QueryRowContext(ctx)
-
-	err := query.Scan()
+	var name string
+	err := query.Scan(&name)
 
 	if err == nil {
 		query := c.queryBuilder.Update("country_medals").

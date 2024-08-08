@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	configs "medal-service/config"
 	pb "medal-service/genproto/medals"
 	pkgPost "medal-service/pkg/postgres"
@@ -16,24 +15,25 @@ import (
 )
 
 func main() {
-	config, err := configs.InitConfig(".") // Ensure this is correct
-	if err != nil {
+	cnf, err := configs.New()
+	if err := cnf.Load(); err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
-	fmt.Println(config.DatabaseConfig, config.RedisConfig)
-	redisClient, err := redisConn.NewRedisDB(config.RedisConfig)
+
+	// fmt.Println(config.DatabaseConfig, config.RedisConfig)
+	redisClient, err := redisConn.NewRedisDB(cnf)
 	if err != nil {
 		log.Fatalf("Failed to connect to Redis: %v", err)
 	}
 	defer redisClient.Close()
 
-	log.Infof("Connected to Redis: %s", config.RedisConfig.Host+":"+config.RedisConfig.Port)
-	postgresConn, err := pkgPost.ConnectPostgres(config.DatabaseConfig)
+	log.Infof("Connected to Redis: %s", cnf.Redis.Host+":"+cnf.Redis.Port)
+	postgresConn, err := pkgPost.ConnectPostgres(cnf.Database)
 	if err != nil {
 		log.Fatalf("Failed to connect to PostgreSQL: %v", err)
 	}
 	defer postgresConn.Close()
-	log.Infof("Connected to PostgreSQL: %s", config.DatabaseConfig.Host+":"+config.DatabaseConfig.Port)
+	log.Infof("Connected to PostgreSQL: %s", cnf.Database.Host+":"+cnf.Database.Port)
 
 	sqrl := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 	countryMedals := postgres.NewCountryMedals(sqrl, postgresConn, redisClient)
@@ -42,11 +42,11 @@ func main() {
 
 	service := service.NewMedalService(postgresImp)
 
-	listener, err := net.Listen("tcp", config.Host+":"+config.GrpcServerPort)
+	listener, err := net.Listen("tcp", cnf.Server.Port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	log.Infof("Medal gRPC server listening on: %s", config.GrpcServerPort)
+	log.Infof("Medal gRPC server listening on: %s", cnf.Server.Port)
 	gRPCServer := grpc.NewServer()
 
 	defer gRPCServer.GracefulStop()
