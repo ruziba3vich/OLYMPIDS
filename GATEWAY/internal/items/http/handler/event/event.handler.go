@@ -22,3 +22,5 @@ func NewAthleteHandler(logger *slog.Logger, event pb.EventServiceClient, redis *
 		redis:  redis,
 	}
 }
+
+
