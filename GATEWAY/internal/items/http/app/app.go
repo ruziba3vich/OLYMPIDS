@@ -89,10 +89,12 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 
 		medals := admin.Group("medals")
 		{
-			medals.GET("/ranking", handler.MedalsRepo.Ranking)
-			medals.GET("", handler.MedalsRepo.GetAllMedals)
-			medals.PUT("/:id", handler.MedalsRepo.UpdatesMedalByID)
-			medals.DELETE("/:id", handler.MedalsRepo.DeleteMedalByID)
+			medals.POST("/", handler.MedalsRepo.DeleteMedalHandler)
+			medals.GET("/:id", handler.MedalsRepo.GetMedalHandler)
+			medals.PUT("/", handler.MedalsRepo.UpdateMedalHandler)
+			medals.DELETE("/:id", handler.MedalsRepo.DeleteMedalHandler)
+			medals.GET("/country-ranking", handler.MedalsRepo.GetCountryRankings)
+			medals.GET("/range", handler.MedalsRepo.GetMedalsByTimeRange)
 		}
 
 		athletes := admin.Group("athletes")

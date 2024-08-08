@@ -6,6 +6,8 @@ import (
 	pb "medal-service/genproto/medals"
 	"medal-service/models"
 	"medal-service/repositroy"
+	"medal-service/storage/postgres"
+	"strconv"
 
 	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -14,6 +16,7 @@ import (
 type MedalService struct {
 	repo repositroy.MedalRepository
 	pb.UnimplementedMedalServiceServer
+	countryMedals postgres.CountryMedals
 }
 
 func NewMedalService(repo repositroy.MedalRepository) *MedalService {
@@ -213,9 +216,25 @@ func (m *MedalService) UpdateMedal(ctx context.Context, req *pb.UpdateMedalReque
 	}, nil
 }
 
-// func (m *MedalService) RankingByCountry(ctx context.Context, req *pb.GetRankingByCountryRequest) (*pb.GetRankingResponse, error) {
-// 	ranking, err := m.repo.GetTopCountries(ctx, req.GetType())
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// }
+func (m *MedalService) RankingByCountry(ctx context.Context, req *pb.GetRankingByCountryRequest) (*pb.GetRankingResponse, error) {
+	limit, err := strconv.Atoi(req.Limit)
+	if err != nil {
+		return nil, err
+	}
+
+	ranking, err := m.countryMedals.GetTopCountries(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+	// log.Println(req)
+	var res pb.GetRankingResponse
+	for _, country := range ranking {
+		var rank pb.RankingResponse
+		rank.BronzeCount = int32(country.BronzeCount)
+		rank.GoldCount = int32(country.GoldCount)
+		rank.SilverCount = int32(country.SilverCount)
+		rank.Name = country.Name
+		res.Rankings = append(res.Rankings, &rank)
+	}
+	return &res, nil
+}
