@@ -625,6 +625,176 @@
                 }
             }
         },
+        "/admin/medals/": {
+            "put": {
+                "description": "Update the details of an existing medal",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Medals"
+                ],
+                "summary": "Update a medal",
+                "parameters": [
+                    {
+                        "description": "Updated medal details",
+                        "name": "medal",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.UpdateMedalRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new medal with the provided details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Medals"
+                ],
+                "summary": "Create a new medal",
+                "parameters": [
+                    {
+                        "description": "Medal details",
+                        "name": "medal",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.CreateMedalRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/medals/{id}": {
+            "get": {
+                "description": "Retrieve the details of a medal using its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Medals"
+                ],
+                "summary": "Get a medal by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medal ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.GetMedalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a medal using its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Medals"
+                ],
+                "summary": "Delete a medal by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medal ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/superadmin/createadmin": {
             "post": {
                 "description": "Create a new admin user by a super admin",
@@ -1247,6 +1417,80 @@
                 },
                 "updated_at": {
                     "$ref": "#/definitions/timestamppb.Timestamp"
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.CreateMedalRequest": {
+            "type": "object",
+            "properties": {
+                "athlete_id": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.GetMedalResponse": {
+            "type": "object",
+            "properties": {
+                "medal": {
+                    "$ref": "#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.Medal"
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.Medal": {
+            "type": "object",
+            "properties": {
+                "athlete_id": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "$ref": "#/definitions/timestamppb.Timestamp"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "$ref": "#/definitions/timestamppb.Timestamp"
+                }
+            }
+        },
+        "github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_medals.UpdateMedalRequest": {
+            "type": "object",
+            "properties": {
+                "athlete_id": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
