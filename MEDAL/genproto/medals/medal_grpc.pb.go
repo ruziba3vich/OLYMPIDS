@@ -27,9 +27,9 @@ type MedalServiceClient interface {
 	GetMedals(ctx context.Context, in *GetMedalsRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
 	UpdateMedal(ctx context.Context, in *UpdateMedalRequest, opts ...grpc.CallOption) (*UpdateMedalResponse, error)
 	DeleteMedal(ctx context.Context, in *DeleteMedalRequest, opts ...grpc.CallOption) (*DeleteMedalResponse, error)
-	GetMedalsByCountry(ctx context.Context, in *GetMedalsByCountryRequest, opts ...grpc.CallOption) (*GetMedalsByCountryResponse, error)
+	GetMedalsByCountry(ctx context.Context, in *GetMedalsByCountryRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
 	GetMedalsByAthlete(ctx context.Context, in *GetMedalsByAthleteRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
-	GetMedalsByTimeRange(ctx context.Context, in *GetMedalsByTimeRangeRequest, opts ...grpc.CallOption) (*GetMedalsByTimeRangeResponse, error)
+	GetMedalsByTimeRange(ctx context.Context, in *GetMedalsByTimeRangeRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
 }
 
 type medalServiceClient struct {
@@ -85,8 +85,8 @@ func (c *medalServiceClient) DeleteMedal(ctx context.Context, in *DeleteMedalReq
 	return out, nil
 }
 
-func (c *medalServiceClient) GetMedalsByCountry(ctx context.Context, in *GetMedalsByCountryRequest, opts ...grpc.CallOption) (*GetMedalsByCountryResponse, error) {
-	out := new(GetMedalsByCountryResponse)
+func (c *medalServiceClient) GetMedalsByCountry(ctx context.Context, in *GetMedalsByCountryRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error) {
+	out := new(GetMedalsResponse)
 	err := c.cc.Invoke(ctx, "/medal.MedalService/GetMedalsByCountry", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -103,8 +103,8 @@ func (c *medalServiceClient) GetMedalsByAthlete(ctx context.Context, in *GetMeda
 	return out, nil
 }
 
-func (c *medalServiceClient) GetMedalsByTimeRange(ctx context.Context, in *GetMedalsByTimeRangeRequest, opts ...grpc.CallOption) (*GetMedalsByTimeRangeResponse, error) {
-	out := new(GetMedalsByTimeRangeResponse)
+func (c *medalServiceClient) GetMedalsByTimeRange(ctx context.Context, in *GetMedalsByTimeRangeRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error) {
+	out := new(GetMedalsResponse)
 	err := c.cc.Invoke(ctx, "/medal.MedalService/GetMedalsByTimeRange", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -121,9 +121,9 @@ type MedalServiceServer interface {
 	GetMedals(context.Context, *GetMedalsRequest) (*GetMedalsResponse, error)
 	UpdateMedal(context.Context, *UpdateMedalRequest) (*UpdateMedalResponse, error)
 	DeleteMedal(context.Context, *DeleteMedalRequest) (*DeleteMedalResponse, error)
-	GetMedalsByCountry(context.Context, *GetMedalsByCountryRequest) (*GetMedalsByCountryResponse, error)
+	GetMedalsByCountry(context.Context, *GetMedalsByCountryRequest) (*GetMedalsResponse, error)
 	GetMedalsByAthlete(context.Context, *GetMedalsByAthleteRequest) (*GetMedalsResponse, error)
-	GetMedalsByTimeRange(context.Context, *GetMedalsByTimeRangeRequest) (*GetMedalsByTimeRangeResponse, error)
+	GetMedalsByTimeRange(context.Context, *GetMedalsByTimeRangeRequest) (*GetMedalsResponse, error)
 	mustEmbedUnimplementedMedalServiceServer()
 }
 
@@ -146,13 +146,13 @@ func (UnimplementedMedalServiceServer) UpdateMedal(context.Context, *UpdateMedal
 func (UnimplementedMedalServiceServer) DeleteMedal(context.Context, *DeleteMedalRequest) (*DeleteMedalResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMedal not implemented")
 }
-func (UnimplementedMedalServiceServer) GetMedalsByCountry(context.Context, *GetMedalsByCountryRequest) (*GetMedalsByCountryResponse, error) {
+func (UnimplementedMedalServiceServer) GetMedalsByCountry(context.Context, *GetMedalsByCountryRequest) (*GetMedalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMedalsByCountry not implemented")
 }
 func (UnimplementedMedalServiceServer) GetMedalsByAthlete(context.Context, *GetMedalsByAthleteRequest) (*GetMedalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMedalsByAthlete not implemented")
 }
-func (UnimplementedMedalServiceServer) GetMedalsByTimeRange(context.Context, *GetMedalsByTimeRangeRequest) (*GetMedalsByTimeRangeResponse, error) {
+func (UnimplementedMedalServiceServer) GetMedalsByTimeRange(context.Context, *GetMedalsByTimeRangeRequest) (*GetMedalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMedalsByTimeRange not implemented")
 }
 func (UnimplementedMedalServiceServer) mustEmbedUnimplementedMedalServiceServer() {}

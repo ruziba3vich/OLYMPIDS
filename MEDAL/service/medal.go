@@ -25,6 +25,7 @@ func (m *MedalService) CreateMedal(ctx context.Context, req *pb.CreateMedalReque
 		Description: req.GetDescription(),
 		AthleteID:   uuid.MustParse(req.GetAthleteId()),
 		Type:        req.GetType(),
+		Country:     req.GetCountry(),
 	}
 
 	createdMedal, err := m.repo.CreateMedal(ctx, medal)
@@ -37,6 +38,7 @@ func (m *MedalService) CreateMedal(ctx context.Context, req *pb.CreateMedalReque
 		Description: createdMedal.Description,
 		AthleteId:   createdMedal.AthleteID.String(),
 		Type:        createdMedal.Type,
+		Country:     createdMedal.Country,
 		CreatedAt:   timestamppb.New(createdMedal.CreatedAt),
 		UpdatedAt:   timestamppb.New(createdMedal.UpdatedAt),
 	}, nil
@@ -73,6 +75,7 @@ func (m *MedalService) GetMedal(ctx context.Context, req *pb.GetMedalRequest) (*
 			Description: medal.Description,
 			AthleteId:   medal.AthleteID.String(),
 			Type:        medal.Type,
+			Country:     medal.Country,
 			CreatedAt:   timestamppb.New(medal.CreatedAt),
 			UpdatedAt:   timestamppb.New(medal.UpdatedAt),
 		},
@@ -92,6 +95,7 @@ func (m *MedalService) GetMedals(ctx context.Context, req *pb.GetMedalsRequest) 
 			Description: medal.Description,
 			AthleteId:   medal.AthleteID.String(),
 			Type:        medal.Type,
+			Country:     medal.Country,
 			CreatedAt:   timestamppb.New(medal.CreatedAt),
 			UpdatedAt:   timestamppb.New(medal.UpdatedAt),
 		}
@@ -118,6 +122,7 @@ func (m *MedalService) GetMedalsByAthlete(ctx context.Context, req *pb.GetMedals
 			Description: medal.Description,
 			AthleteId:   medal.AthleteID.String(),
 			Type:        medal.Type,
+			Country:     medal.Country,
 			CreatedAt:   timestamppb.New(medal.CreatedAt),
 			UpdatedAt:   timestamppb.New(medal.UpdatedAt),
 		}
@@ -126,7 +131,7 @@ func (m *MedalService) GetMedalsByAthlete(ctx context.Context, req *pb.GetMedals
 	return &pb.GetMedalsResponse{Medals: pbMedals}, nil
 }
 
-func (m *MedalService) GetMedalsByCountry(ctx context.Context, req *pb.GetMedalsByCountryRequest) (*pb.GetMedalsByCountryResponse, error) {
+func (m *MedalService) GetMedalsByCountry(ctx context.Context, req *pb.GetMedalsByCountryRequest) (*pb.GetMedalsResponse, error) {
 	medals, err := m.repo.GetMedalsByCountry(ctx, req.GetCountry())
 	if err != nil {
 		return nil, err
@@ -139,15 +144,16 @@ func (m *MedalService) GetMedalsByCountry(ctx context.Context, req *pb.GetMedals
 			Description: medal.Description,
 			AthleteId:   medal.AthleteID.String(),
 			Type:        medal.Type,
+			Country:     medal.Country,
 			CreatedAt:   timestamppb.New(medal.CreatedAt),
 			UpdatedAt:   timestamppb.New(medal.UpdatedAt),
 		}
 	}
 
-	return &pb.GetMedalsByCountryResponse{Medals: pbMedals}, nil
+	return &pb.GetMedalsResponse{Medals: pbMedals}, nil
 }
 
-func (m *MedalService) GetMedalsByTimeRange(ctx context.Context, req *pb.GetMedalsByTimeRangeRequest) (*pb.GetMedalsByTimeRangeResponse, error) {
+func (m *MedalService) GetMedalsByTimeRange(ctx context.Context, req *pb.GetMedalsByTimeRangeRequest) (*pb.GetMedalsResponse, error) {
 	startDate := req.StartTime.AsTime()
 	endDate := req.EndTime.AsTime()
 	medals, err := m.repo.GetMedalsByTimeRange(ctx, startDate, endDate, req.Page, req.Limit)
@@ -162,12 +168,13 @@ func (m *MedalService) GetMedalsByTimeRange(ctx context.Context, req *pb.GetMeda
 			Description: medal.Description,
 			AthleteId:   medal.AthleteID.String(),
 			Type:        medal.Type,
+			Country:     medal.Country,
 			CreatedAt:   timestamppb.New(medal.CreatedAt),
 			UpdatedAt:   timestamppb.New(medal.UpdatedAt),
 		})
 	}
 
-	return &pb.GetMedalsByTimeRangeResponse{Medals: medalResponses}, nil
+	return &pb.GetMedalsResponse{Medals: medalResponses}, nil
 }
 
 func (m *MedalService) UpdateMedal(ctx context.Context, req *pb.UpdateMedalRequest) (*pb.UpdateMedalResponse, error) {
@@ -185,6 +192,7 @@ func (m *MedalService) UpdateMedal(ctx context.Context, req *pb.UpdateMedalReque
 		Description: req.GetDescription(),
 		AthleteID:   athletId,
 		Type:        req.GetType(),
+		Country:     req.GetCountry(),
 	}
 
 	updatedMedal, err := m.repo.UpdateMedal(ctx, medal)
@@ -198,6 +206,7 @@ func (m *MedalService) UpdateMedal(ctx context.Context, req *pb.UpdateMedalReque
 			Description: updatedMedal.Description,
 			AthleteId:   updatedMedal.AthleteID.String(),
 			Type:        updatedMedal.Type,
+			Country:     updatedMedal.Country,
 			CreatedAt:   timestamppb.New(updatedMedal.CreatedAt),
 			UpdatedAt:   timestamppb.New(updatedMedal.UpdatedAt),
 		},

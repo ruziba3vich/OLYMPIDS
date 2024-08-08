@@ -18,13 +18,15 @@ type MedalPostgresImpl struct {
 	db           *sqlx.DB
 	queryBuilder sq.StatementBuilderType
 	redis        *redis.Client
+	country      *CountryMedals
 }
 
-func NewMedalPostgres(queryBuilder sq.StatementBuilderType, db *sqlx.DB, redis *redis.Client) repositroy.MedalRepository {
+func NewMedalPostgres(queryBuilder sq.StatementBuilderType, db *sqlx.DB, redis *redis.Client, cMedals *CountryMedals) repositroy.MedalRepository {
 	return &MedalPostgresImpl{
 		queryBuilder: queryBuilder,
 		db:           db,
 		redis:        redis,
+		country:      cMedals,
 	}
 }
 
@@ -36,8 +38,8 @@ func (p *MedalPostgresImpl) CreateMedal(ctx context.Context, medal *models.Creat
 	defer tx.Rollback()
 
 	query := p.queryBuilder.Insert("medals").
-		Columns("description", "athlete_id", "type").
-		Values(medal.Description, medal.AthleteID, medal.Type).
+		Columns("description", "athlete_id", "type", "country").
+		Values(medal.Description, medal.AthleteID, medal.Type, medal.Country).
 		Suffix("RETURNING id, created_at, updated_at").
 		RunWith(tx).
 		QueryRowContext(ctx)
@@ -50,6 +52,12 @@ func (p *MedalPostgresImpl) CreateMedal(ctx context.Context, medal *models.Creat
 	newMedal.Description = medal.Description
 	newMedal.AthleteID = medal.AthleteID
 	newMedal.Type = medal.Type
+	newMedal.Country = medal.Country
+
+	if _, err := p.country.CreateOrUpdate(ctx, medal.Country, medal.Type); err != nil {
+		log.Printf("Error creating or updating country medals: %v", err)
+		return nil, err
+	}
 
 	if err := tx.Commit(); err != nil {
 		return nil, err
@@ -75,14 +83,14 @@ func (p *MedalPostgresImpl) GetMedalByID(ctx context.Context, id string) (*model
 		}
 	}
 
-	query := p.queryBuilder.Select("id", "description", "athlete_id", "type", "created_at", "updated_at", "deleted_at").
+	query := p.queryBuilder.Select("id", "description", "athlete_id", "type", "country", "created_at", "updated_at", "deleted_at").
 		From("medals").
 		Where(sq.And{sq.Eq{"id": id}, sq.Eq{"deleted_at": nil}}).
 		RunWith(p.db).
 		QueryRowContext(ctx)
 
 	var medal models.Medal
-	err = query.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt)
+	err = query.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.Country, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +137,7 @@ func (p *MedalPostgresImpl) DeleteMedalByID(ctx context.Context, id string) erro
 
 func (p *MedalPostgresImpl) GetMedalsByTimeRange(ctx context.Context, startDate, endDate time.Time, page, limit int32) ([]*models.Medal, error) {
 	offset := (page - 1) * limit
-	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "created_at", "updated_at", "deleted_at").
+	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "country", "created_at", "updated_at", "deleted_at").
 		From("medals").
 		Where(sq.And{sq.GtOrEq{"created_at": startDate}, sq.LtOrEq{"created_at": endDate}, sq.Eq{"deleted_at": nil}}).
 		Offset(uint64(offset)).
@@ -144,7 +152,7 @@ func (p *MedalPostgresImpl) GetMedalsByTimeRange(ctx context.Context, startDate,
 	var medals []*models.Medal
 	for rows.Next() {
 		var medal models.Medal
-		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
+		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.Country, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
 			return nil, err
 		}
 		medals = append(medals, &medal)
@@ -153,7 +161,7 @@ func (p *MedalPostgresImpl) GetMedalsByTimeRange(ctx context.Context, startDate,
 }
 
 func (p *MedalPostgresImpl) GetMedalsByCountry(ctx context.Context, country string) ([]*models.Medal, error) {
-	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "created_at", "updated_at", "deleted_at").
+	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "country", "created_at", "updated_at", "deleted_at").
 		From("medals").
 		Where(sq.And{sq.Eq{"country": country}, sq.Eq{"deleted_at": nil}}).
 		RunWith(p.db).
@@ -166,7 +174,7 @@ func (p *MedalPostgresImpl) GetMedalsByCountry(ctx context.Context, country stri
 	var medals []*models.Medal
 	for rows.Next() {
 		var medal models.Medal
-		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
+		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.Country, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
 			return nil, err
 		}
 		medals = append(medals, &medal)
@@ -175,7 +183,7 @@ func (p *MedalPostgresImpl) GetMedalsByCountry(ctx context.Context, country stri
 }
 
 func (p *MedalPostgresImpl) GetMedalsByAthlete(ctx context.Context, athlete string) ([]*models.Medal, error) {
-	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "created_at", "updated_at", "deleted_at").
+	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "country", "created_at", "updated_at", "deleted_at").
 		From("medals").
 		Where(sq.And{sq.Eq{"athlete_id": athlete}, sq.Eq{"deleted_at": nil}}).
 		RunWith(p.db).
@@ -188,7 +196,7 @@ func (p *MedalPostgresImpl) GetMedalsByAthlete(ctx context.Context, athlete stri
 	var medals []*models.Medal
 	for rows.Next() {
 		var medal models.Medal
-		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
+		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.Country, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
 			return nil, err
 		}
 		medals = append(medals, &medal)
@@ -207,6 +215,7 @@ func (p *MedalPostgresImpl) UpdateMedal(ctx context.Context, medal *models.Updat
 		Set("description", medal.Description).
 		Set("athlete_id", medal.AthleteID).
 		Set("type", medal.Type).
+		Set("country", medal.Country).
 		Set("updated_at", sq.Expr("CURRENT_TIMESTAMP")).
 		Where(sq.And{sq.Eq{"id": medal.ID}, sq.Eq{"deleted_at": nil}}).
 		Suffix("RETURNING id, created_at, updated_at, deleted_at").
@@ -221,13 +230,12 @@ func (p *MedalPostgresImpl) UpdateMedal(ctx context.Context, medal *models.Updat
 	updatedMedal.Description = medal.Description
 	updatedMedal.AthleteID = medal.AthleteID
 	updatedMedal.Type = medal.Type
+	updatedMedal.Country = medal.Country
 
-	// Commit the transaction
 	if err := tx.Commit(); err != nil {
 		return nil, err
 	}
 
-	// Cache the updated medal
 	cacheKey := "medal:" + updatedMedal.ID.String()
 	medalJSON, err := json.Marshal(updatedMedal)
 	if err != nil {
@@ -250,7 +258,7 @@ func (p *MedalPostgresImpl) ListMedals(ctx context.Context, page, limit int32, s
 	log.Println(sortOrder, typeFilter, page, limit)
 	sortOrder = fmt.Sprintf("%s", sortOrder)
 
-	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "created_at", "updated_at", "deleted_at").
+	rows, err := p.queryBuilder.Select("id", "description", "athlete_id", "type", "country", "created_at", "updated_at", "deleted_at").
 		From("medals").
 		Where(sq.And{sq.Eq{"deleted_at": nil}, sq.Like{"type": typeFilter}}).OrderBy(sortOrder).
 		Limit(uint64(limit)).
@@ -265,7 +273,7 @@ func (p *MedalPostgresImpl) ListMedals(ctx context.Context, page, limit int32, s
 	var medals []*models.Medal
 	for rows.Next() {
 		var medal models.Medal
-		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
+		if err := rows.Scan(&medal.ID, &medal.Description, &medal.AthleteID, &medal.Type, &medal.Country, &medal.CreatedAt, &medal.UpdatedAt, &medal.DeletedAt); err != nil {
 			return nil, err
 		}
 		medals = append(medals, &medal)
