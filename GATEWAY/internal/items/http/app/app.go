@@ -65,14 +65,18 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 		superadmin.POST("/createadmin", handler.AuthRepo.SuperAdminCreateAdminHandler)
 	}
 
-	user := router.Group("user")
-	user.Use(middleware.AuthzMiddleware("/user", enforcer))
+	auth := router.Group("auth")
 	{
-		auth := user.Group("auth")
+		admin := auth.Group("/admin")
 		{
-			auth.POST("/register", handler.AuthRepo.RegisterHandler)
-			auth.POST("/login", handler.AuthRepo.LoginHandler)
-			auth.POST("/logout", handler.AuthRepo.LogoutHandler)
+			admin.POST("/login", handler.AuthRepo.AdminLoginHandler)
+			admin.POST("/logout", handler.AuthRepo.AdminLogoutHandler)
+		}
+		user := auth.Group("/user")
+		{
+			user.POST("/register", handler.AuthRepo.RegisterHandler)
+			user.POST("/login", handler.AuthRepo.LoginHandler)
+			user.POST("/logout", handler.AuthRepo.LogoutHandler)
 		}
 	}
 
@@ -81,8 +85,6 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 	{
 		auth := admin.Group("auth")
 		{
-			auth.POST("/login", handler.AuthRepo.AdminLoginHandler)
-			auth.POST("/logout", handler.AuthRepo.AdminLogoutHandler)
 			auth.PUT("/update/:id", handler.AuthRepo.UpdateUserHandler)
 			auth.DELETE("/delete/:id", handler.AuthRepo.DeleteUserHandler)
 		}
@@ -93,8 +95,6 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 			medals.GET("/:id", handler.MedalsRepo.GetMedalHandler)
 			medals.PUT("/", handler.MedalsRepo.UpdateMedalHandler)
 			medals.DELETE("/:id", handler.MedalsRepo.DeleteMedalHandler)
-			medals.GET("/country-ranking", handler.MedalsRepo.GetCountryRankings)
-			medals.GET("/range", handler.MedalsRepo.GetMedalsByTimeRange)
 		}
 
 		athletes := admin.Group("athletes")
@@ -103,6 +103,15 @@ func Run(handler *handler.Handler, logger *slog.Logger, config *config.Config, e
 			athletes.GET("/:id", handler.AthleteRepo.GetAthleteHandler)
 			athletes.PUT("/:id", handler.AthleteRepo.UpdateAthleteHandler)
 			athletes.DELETE("/:id", handler.AthleteRepo.DeleteAthleteHandler)
+		}
+
+		events := admin.Group("events")
+		{
+			events.POST("/", handler.EventRepo.CreateEventHandler)
+			events.GET("/:id", handler.EventRepo.GetEventHandler)
+			events.PUT("/:id", handler.EventRepo.UpdateEventHandler)
+			events.DELETE("/:id", handler.EventRepo.DeleteEventHandler)
+			events.GET("/sport", handler.EventRepo.GetEventBySportHandler)
 		}
 	}
 

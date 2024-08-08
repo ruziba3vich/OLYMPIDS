@@ -447,66 +447,6 @@ paths:
       summary: Delete user
       tags:
       - Admin Auth
-  /admin/auth/login:
-    post:
-      consumes:
-      - application/json
-      description: Log in an admin user with email and password
-      parameters:
-      - description: Login Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Admin login
-      tags:
-      - Admin Auth
-  /admin/auth/logout:
-    post:
-      consumes:
-      - application/json
-      description: Log out an admin user by their ID
-      parameters:
-      - description: Logout Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Admin logout
-      tags:
-      - Admin Auth
   /admin/auth/update/{id}:
     put:
       consumes:
@@ -805,6 +745,225 @@ paths:
       summary: Get a medal by ID
       tags:
       - Admin Medals
+  /admin/medals/country-ranking:
+    get:
+      description: Get Medals Rankings by Country
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get Medals Rankings by Country
+      tags:
+      - Admin Medals
+  /admin/medals/range:
+    get:
+      description: Get Medals Rankings by Country
+      parameters:
+      - description: start_time
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: end_time
+        in: query
+        name: end
+        required: true
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: string
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get Medals by Time range
+      tags:
+      - Admin Medals
+  /auth/admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in an admin user with email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Admin login
+      tags:
+      - Admin Auth
+  /auth/admin/logout:
+    post:
+      consumes:
+      - application/json
+      description: Log out an admin user by their ID
+      parameters:
+      - description: Logout Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Admin logout
+      tags:
+      - Admin Auth
+  /auth/user/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in a user with email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: User login
+      tags:
+      - User Auth
+  /auth/user/logout:
+    post:
+      consumes:
+      - application/json
+      description: Log out a user by their ID
+      parameters:
+      - description: Logout Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: User logout
+      tags:
+      - User Auth
+  /auth/user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with an email and password
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Register a new user
+      tags:
+      - User Auth
   /superadmin/createadmin:
     post:
       consumes:
@@ -895,96 +1054,6 @@ paths:
       summary: Super Admin Logout
       tags:
       - Super Admin
-  /user/auth/login:
-    post:
-      consumes:
-      - application/json
-      description: Log in a user with email and password
-      parameters:
-      - description: Login Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LoginResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: User login
-      tags:
-      - User Auth
-  /user/auth/logout:
-    post:
-      consumes:
-      - application/json
-      description: Log out a user by their ID
-      parameters:
-      - description: Logout Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.LogoutResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: User logout
-      tags:
-      - User Auth
-  /user/auth/register:
-    post:
-      consumes:
-      - application/json
-      description: Register a new user with an email and password
-      parameters:
-      - description: Register Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/github_com_ruziba3vich_OLYMPIDS_GATEWAY_genproto_auth.RegisterResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Register a new user
-      tags:
-      - User Auth
 schemes:
 - http
 - https
