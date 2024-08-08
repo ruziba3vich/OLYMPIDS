@@ -53,6 +53,7 @@ func (s *Storage) CreateAthlete(ctx context.Context, in *pb.CreateAthleteRequest
 			"last_name",
 			"gender",
 			"nationality",
+			"country",
 			"height",
 			"weight",
 			"sport",
@@ -64,6 +65,7 @@ func (s *Storage) CreateAthlete(ctx context.Context, in *pb.CreateAthleteRequest
 		in.LastName,
 		in.Gender,
 		in.Nationality,
+		in.Country,
 		in.Height,
 		in.Weight,
 		in.Sport,
@@ -87,6 +89,7 @@ func (s *Storage) CreateAthlete(ctx context.Context, in *pb.CreateAthleteRequest
 		LastName:    in.LastName,
 		Gender:      in.Gender,
 		Nationality: in.Nationality,
+		Country:     in.Country,
 		Height:      in.Height,
 		Weight:      in.Weight,
 		Sport:       in.Sport,
@@ -126,6 +129,7 @@ func (s *Storage) GetAthlete(ctx context.Context, in *pb.GetAthleteRequest) (*pb
 		"last_name",
 		"gender",
 		"nationality",
+		"country",
 		"height",
 		"weight",
 		"sport",
@@ -149,6 +153,7 @@ func (s *Storage) GetAthlete(ctx context.Context, in *pb.GetAthleteRequest) (*pb
 		&athlete.LastName,
 		&athlete.Gender,
 		&athlete.Nationality,
+		&athlete.Country,
 		&athlete.Height,
 		&athlete.Weight,
 		&athlete.Sport,
@@ -195,6 +200,9 @@ func (s *Storage) UpdateAthlete(ctx context.Context, in *pb.UpdateAthleteRequest
 	}
 	if len(in.Nationality) > 0 {
 		queryBuilder = queryBuilder.Set("nationality", in.Nationality)
+	}
+	if len(in.Country) > 0 {
+		queryBuilder = queryBuilder.Set("country", in.Country)
 	}
 	if len(in.Height) > 0 {
 		queryBuilder = queryBuilder.Set("height", in.Height)
@@ -289,6 +297,7 @@ func (s *Storage) GetAthleteBySport(ctx context.Context, in *pb.GetAthleteBySpor
 		"last_name",
 		"gender",
 		"nationality",
+		"country",
 		"height",
 		"weight",
 		"sport",
@@ -321,6 +330,7 @@ func (s *Storage) GetAthleteBySport(ctx context.Context, in *pb.GetAthleteBySpor
 			&athlete.LastName,
 			&athlete.Gender,
 			&athlete.Nationality,
+			&athlete.Country,
 			&athlete.Height,
 			&athlete.Weight,
 			&athlete.Sport,

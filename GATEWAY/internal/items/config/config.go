@@ -8,8 +8,9 @@ import (
 
 type (
 	Config struct {
-		Server ServerConfig
-		Redis  RedisConfig
+		Server   ServerConfig
+		Redis    RedisConfig
+		RabbitMQ RabbitMQConfig
 	}
 	ServerConfig struct {
 		ServerPort  string
@@ -22,6 +23,9 @@ type (
 	RedisConfig struct {
 		Host string
 		Port string
+	}
+	RabbitMQConfig struct {
+		RabbitMQ string
 	}
 )
 
@@ -38,6 +42,7 @@ func (c *Config) Load() error {
 	c.Server.StreamPort = ":" + os.Getenv("STREAM_PORT")
 	c.Redis.Host = os.Getenv("REDIS_HOST")
 	c.Redis.Port = os.Getenv("REDIS_PORT")
+	c.RabbitMQ.RabbitMQ = os.Getenv("RABBITMQ_URI")
 
 	return nil
 }

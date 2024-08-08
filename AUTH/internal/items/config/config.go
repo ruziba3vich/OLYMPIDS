@@ -12,6 +12,7 @@ type (
 		Database      DatabaseConfig
 		Redis         RedisConfig
 		JWT           JWTConfig
+		RabbitMQ      RabbitMQConfig
 		TableName     string
 		BookId        string
 		Title         string
@@ -36,6 +37,9 @@ type (
 		Host string
 		Port string
 	}
+	RabbitMQConfig struct {
+		RabbitMQ string
+	}
 )
 
 func (c *Config) Load() error {
@@ -57,6 +61,7 @@ func (c *Config) Load() error {
 	c.Author = os.Getenv("AUTHOR")
 	c.PublisherYear = os.Getenv("PUB_YEAR")
 	c.JWT.SecretKey = os.Getenv("JWT_SECRET_KEY")
+	c.RabbitMQ.RabbitMQ = os.Getenv("RABBITMQ_URI")
 
 	return nil
 }
@@ -68,4 +73,3 @@ func New() (*Config, error) {
 	}
 	return &config, nil
 }
-

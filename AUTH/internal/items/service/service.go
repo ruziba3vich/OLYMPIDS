@@ -43,3 +43,13 @@ func (s *Service) CreateAdmin(ctx context.Context, in *pb.CreateAdminRequest) (*
 	s.logger.Info("CreateAdmin function was invoked", slog.String("request", in.String()))
 	return s.storage.CreateAdmin(ctx, in)
 }
+
+func (s *Service) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+	s.logger.Info("UpdateUser function was invoked", slog.String("request", in.String()))
+	return s.storage.UpdateUser(ctx, in)
+}
+
+func (s *Service) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
+	s.logger.Info("DeleteUser function was invoked", slog.String("request", in.String()))
+	return s.storage.DeleteUser(ctx, in)
+}

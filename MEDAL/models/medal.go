@@ -11,6 +11,7 @@ type Medal struct {
 	Description string     `db:"description"`
 	AthleteID   uuid.UUID  `db:"athlete_id"`
 	Type        string     `db:"type"`
+	Country     string     `db:"country"`
 	CreatedAt   time.Time  `db:"created_at"`
 	UpdatedAt   time.Time  `db:"updated_at"`
 	DeletedAt   *time.Time `db:"deleted_at"`
@@ -20,6 +21,7 @@ type CreateMedal struct {
 	Description string    `db:"description"`
 	AthleteID   uuid.UUID `db:"athlete_id"`
 	Type        string    `db:"type"`
+	Country     string    `db:"country"`
 }
 
 type UpdateMedal struct {
@@ -27,4 +29,5 @@ type UpdateMedal struct {
 	Description string    `db:"description"`
 	AthleteID   uuid.UUID `db:"athlete_id"`
 	Type        string    `db:"type"`
+	Country     string    `db:"country"`
 }

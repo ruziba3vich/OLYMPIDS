@@ -204,6 +204,72 @@ func (s *Storage) CreateAdmin(ctx context.Context, in *pb.CreateAdminRequest) (*
 	}, nil
 }
 
+func (s *Storage) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+	updated_at := time.Now()
+
+	query := s.queryBuilder.Update("users").
+		Where(sq.Eq{"id": in.UserId}).
+		Where("deleted_at IS NULL").
+		Set("updated_at", updated_at)
+
+	if in.Email != "" {
+		query = query.Set("email", in.Email)
+	}
+	if in.Password != "" {
+		hashed_password, err := hashPassword(in.Password)
+		if err != nil {
+			s.logger.Error("Error while hashing password:", slog.String("err:", err.Error()))
+			return nil, err
+		}
+		query = query.Set("hashed_password", hashed_password)
+	}
+	if in.Role != "" {
+		query = query.Set("role", in.Role)
+	}
+	if in.IsActive {
+		query = query.Set("is_active", in.IsActive)
+	}
+
+	sqlQuery, args, err := query.ToSql()
+	if err != nil {
+		s.logger.Error("Error while building a query")
+		return nil, err
+	}
+
+	_, err = s.postgres.ExecContext(ctx, sqlQuery, args...)
+	if err != nil {
+		s.logger.Error("Error while executing a query")
+		return nil, err
+	}
+
+	return &pb.UpdateUserResponse{
+		Message: "User updated successfully",
+	}, nil
+}
+
+func (s *Storage) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
+	deleted_at := time.Now()
+
+	query, args, err := s.queryBuilder.Update("users").
+		Set("deleted_at", deleted_at).
+		Where(sq.Eq{"id": in.UserId}).
+		ToSql()
+	if err != nil {
+		s.logger.Error("Error while building a query")
+		return nil, err
+	}
+
+	_, err = s.postgres.ExecContext(ctx, query, args...)
+	if err != nil {
+		s.logger.Error("Error while executing a query")
+		return nil, err
+	}
+
+	return &pb.DeleteUserResponse{
+		Message: "User deleted successfully",
+	}, nil
+}
+
 func hashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {

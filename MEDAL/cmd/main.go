@@ -36,9 +36,9 @@ func main() {
 	log.Infof("Connected to PostgreSQL: %s", config.DatabaseConfig.Host+":"+config.DatabaseConfig.Port)
 
 	sqrl := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-
+	countryMedals := postgres.NewCountryMedals(sqrl, postgresConn, redisClient)
 	// redisImp := redisstorage.NewMedalRedisImpl(redisClient)
-	postgresImp := postgres.NewMedalPostgres(sqrl, postgresConn, redisClient)
+	postgresImp := postgres.NewMedalPostgres(sqrl, postgresConn, redisClient, countryMedals)
 
 	service := service.NewMedalService(postgresImp)
 

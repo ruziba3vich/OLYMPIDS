@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	casbin "github.com/casbin/casbin/v2"
+	amqp "github.com/rabbitmq/amqp091-go"
 
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/config"
 	"github.com/ruziba3vich/OLYMPIDS/GATEWAY/internal/items/http/app"
@@ -42,7 +43,19 @@ func main() {
 		log.Fatal(err)
 	}
 
-	handler := handler.New(redisservice.New(redis, logger), logger, config)
+	conn, err := amqp.Dial(config.RabbitMQ.RabbitMQ)
+	if err != nil {
+		log.Fatalf("Failed to connect to RabbitMQ: %v", err)
+	}
+	defer conn.Close()
+
+	ch, err := conn.Channel()
+	if err != nil {
+		log.Fatalf("Failed to open a channel: %v", err)
+	}
+	defer ch.Close()
+
+	handler := handler.New(redisservice.New(redis, logger), logger, config, ch)
 
 	log.Fatal(app.Run(handler, logger, config, enforcer))
 }

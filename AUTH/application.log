@@ -3,3 +3,15 @@
 {"time":"2024-08-07T07:53:29.953528458+05:00","level":"INFO","msg":"Login function was invoked","request":"email:\"Hello\" password:\"Hello\""}
 {"time":"2024-08-07T07:54:56.17336384+05:00","level":"INFO","msg":"Logout function was invoked","request":"user_id:\"b4cd97c6-173e-406f-8220-2175f748a8c7\""}
 {"time":"2024-08-07T07:55:05.617152247+05:00","level":"INFO","msg":"Login function was invoked","request":"email:\"Hello\" password:\"Hello\""}
+{"time":"2024-08-08T00:45:30.064205403+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:45:30.064568029+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"delete"}
+{"time":"2024-08-08T00:45:30.064609373+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:45:30.064595787+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:45:30.064775912+05:00","level":"INFO","msg":"All consumers have stopped"}
+{"time":"2024-08-08T00:45:30.064789547+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"setadmin"}
+{"time":"2024-08-08T00:45:35.236045477+05:00","level":"INFO","msg":"Shutting down, waiting for consumers to finish"}
+{"time":"2024-08-08T00:45:35.236207298+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"create"}
+{"time":"2024-08-08T00:45:35.236223087+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"update"}
+{"time":"2024-08-08T00:45:35.236248242+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"setadmin"}
+{"time":"2024-08-08T00:45:35.236260429+05:00","level":"INFO","msg":"Context done, stopping consumer","consumer":"delete"}
+{"time":"2024-08-08T00:45:35.236328337+05:00","level":"INFO","msg":"All consumers have stopped"}
