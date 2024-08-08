@@ -1,0 +1,11 @@
+{"time":"2024-08-08T09:06:45.289601248+05:00","level":"INFO","msg":"RegisterHandler called"}
+{"time":"2024-08-08T09:06:45.28994004+05:00","level":"INFO","msg":"Message published","queue":"register_user"}
+{"time":"2024-08-08T09:09:39.711797157+05:00","level":"INFO","msg":"RegisterHandler called"}
+{"time":"2024-08-08T09:09:39.712111526+05:00","level":"INFO","msg":"Message published","queue":"register_user"}
+{"time":"2024-08-08T09:13:22.050913938+05:00","level":"INFO","msg":"RegisterHandler called"}
+{"time":"2024-08-08T09:13:22.051278505+05:00","level":"INFO","msg":"Message published","queue":"register_user"}
+{"time":"2024-08-08T09:16:03.333420096+05:00","level":"INFO","msg":"RegisterHandler called"}
+{"time":"2024-08-08T09:16:03.333774769+05:00","level":"INFO","msg":"Message published","queue":"register_user"}
+{"time":"2024-08-08T09:18:23.092367511+05:00","level":"INFO","msg":"RegisterHandler called"}
+{"time":"2024-08-08T09:18:23.092934165+05:00","level":"INFO","msg":"Message published","queue":"register_user"}
+{"time":"2024-08-08T09:21:27.227673356+05:00","level":"INFO","msg":"LoginHandler called"}

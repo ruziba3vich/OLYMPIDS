@@ -19,12 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	AuthService_Register_FullMethodName    = "/auth.AuthService/Register"
-	AuthService_Login_FullMethodName       = "/auth.AuthService/Login"
-	AuthService_Logout_FullMethodName      = "/auth.AuthService/Logout"
-	AuthService_CreateAdmin_FullMethodName = "/auth.AuthService/CreateAdmin"
-	AuthService_UpdateUser_FullMethodName  = "/auth.AuthService/UpdateUser"
-	AuthService_DeleteUser_FullMethodName  = "/auth.AuthService/DeleteUser"
+	AuthService_Register_FullMethodName       = "/auth.AuthService/Register"
+	AuthService_Login_FullMethodName          = "/auth.AuthService/Login"
+	AuthService_Logout_FullMethodName         = "/auth.AuthService/Logout"
+	AuthService_CreateAdmin_FullMethodName    = "/auth.AuthService/CreateAdmin"
+	AuthService_UpdateUser_FullMethodName     = "/auth.AuthService/UpdateUser"
+	AuthService_DeleteUser_FullMethodName     = "/auth.AuthService/DeleteUser"
+	AuthService_GetUserByEmail_FullMethodName = "/auth.AuthService/GetUserByEmail"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -37,6 +38,7 @@ type AuthServiceClient interface {
 	CreateAdmin(ctx context.Context, in *CreateAdminRequest, opts ...grpc.CallOption) (*CreateAdminResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
+	GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 }
 
 type authServiceClient struct {
@@ -107,6 +109,16 @@ func (c *authServiceClient) DeleteUser(ctx context.Context, in *DeleteUserReques
 	return out, nil
 }
 
+func (c *authServiceClient) GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetUserByEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
@@ -117,6 +129,7 @@ type AuthServiceServer interface {
 	CreateAdmin(context.Context, *CreateAdminRequest) (*CreateAdminResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
+	GetUserByEmail(context.Context, *GetUserByEmailRequest) (*RegisterResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -141,6 +154,9 @@ func (UnimplementedAuthServiceServer) UpdateUser(context.Context, *UpdateUserReq
 }
 func (UnimplementedAuthServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+func (UnimplementedAuthServiceServer) GetUserByEmail(context.Context, *GetUserByEmailRequest) (*RegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByEmail not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -263,6 +279,24 @@ func _AuthService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_GetUserByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetUserByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetUserByEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetUserByEmail(ctx, req.(*GetUserByEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -293,6 +327,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _AuthService_DeleteUser_Handler,
+		},
+		{
+			MethodName: "GetUserByEmail",
+			Handler:    _AuthService_GetUserByEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

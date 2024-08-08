@@ -27,6 +27,7 @@ const (
 	MedalService_GetMedalsByCountry_FullMethodName   = "/medal.MedalService/GetMedalsByCountry"
 	MedalService_GetMedalsByAthlete_FullMethodName   = "/medal.MedalService/GetMedalsByAthlete"
 	MedalService_GetMedalsByTimeRange_FullMethodName = "/medal.MedalService/GetMedalsByTimeRange"
+	MedalService_RankingByCountry_FullMethodName     = "/medal.MedalService/RankingByCountry"
 )
 
 // MedalServiceClient is the client API for MedalService service.
@@ -41,6 +42,7 @@ type MedalServiceClient interface {
 	GetMedalsByCountry(ctx context.Context, in *GetMedalsByCountryRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
 	GetMedalsByAthlete(ctx context.Context, in *GetMedalsByAthleteRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
 	GetMedalsByTimeRange(ctx context.Context, in *GetMedalsByTimeRangeRequest, opts ...grpc.CallOption) (*GetMedalsResponse, error)
+	RankingByCountry(ctx context.Context, in *GetRankingByCountryRequest, opts ...grpc.CallOption) (*GetRankingResponse, error)
 }
 
 type medalServiceClient struct {
@@ -131,6 +133,16 @@ func (c *medalServiceClient) GetMedalsByTimeRange(ctx context.Context, in *GetMe
 	return out, nil
 }
 
+func (c *medalServiceClient) RankingByCountry(ctx context.Context, in *GetRankingByCountryRequest, opts ...grpc.CallOption) (*GetRankingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRankingResponse)
+	err := c.cc.Invoke(ctx, MedalService_RankingByCountry_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MedalServiceServer is the server API for MedalService service.
 // All implementations must embed UnimplementedMedalServiceServer
 // for forward compatibility
@@ -143,6 +155,7 @@ type MedalServiceServer interface {
 	GetMedalsByCountry(context.Context, *GetMedalsByCountryRequest) (*GetMedalsResponse, error)
 	GetMedalsByAthlete(context.Context, *GetMedalsByAthleteRequest) (*GetMedalsResponse, error)
 	GetMedalsByTimeRange(context.Context, *GetMedalsByTimeRangeRequest) (*GetMedalsResponse, error)
+	RankingByCountry(context.Context, *GetRankingByCountryRequest) (*GetRankingResponse, error)
 	mustEmbedUnimplementedMedalServiceServer()
 }
 
@@ -173,6 +186,9 @@ func (UnimplementedMedalServiceServer) GetMedalsByAthlete(context.Context, *GetM
 }
 func (UnimplementedMedalServiceServer) GetMedalsByTimeRange(context.Context, *GetMedalsByTimeRangeRequest) (*GetMedalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMedalsByTimeRange not implemented")
+}
+func (UnimplementedMedalServiceServer) RankingByCountry(context.Context, *GetRankingByCountryRequest) (*GetRankingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RankingByCountry not implemented")
 }
 func (UnimplementedMedalServiceServer) mustEmbedUnimplementedMedalServiceServer() {}
 
@@ -331,6 +347,24 @@ func _MedalService_GetMedalsByTimeRange_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MedalService_RankingByCountry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRankingByCountryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MedalServiceServer).RankingByCountry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MedalService_RankingByCountry_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MedalServiceServer).RankingByCountry(ctx, req.(*GetRankingByCountryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MedalService_ServiceDesc is the grpc.ServiceDesc for MedalService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -369,6 +403,10 @@ var MedalService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMedalsByTimeRange",
 			Handler:    _MedalService_GetMedalsByTimeRange_Handler,
+		},
+		{
+			MethodName: "RankingByCountry",
+			Handler:    _MedalService_RankingByCountry_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,4 +1,10 @@
-p, user, /products/user, *
-p, admin, /products/admin, *
-p, admin, /auth/admin, *
-g, admin, user
+p, superadmin, /superadmin/*, *
+
+p, user, /user/auth/*, *
+
+p, admin, /admin/auth/*, *
+p, admin, /admin/medals/*, *
+p, admin, /admin/athletes/*, *
+
+g, admin, superadmin
+g, user, admin

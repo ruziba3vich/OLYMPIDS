@@ -270,6 +270,29 @@ func (s *Storage) DeleteUser(ctx context.Context, in *pb.DeleteUserRequest) (*pb
 	}, nil
 }
 
+func (s *Storage) GetUserByEmail(ctx context.Context, in *pb.GetUserByEmailRequest) (*pb.RegisterResponse, error) {
+	query, args, err := s.queryBuilder.Select("id").
+		From("users").
+		Where(sq.Eq{"email": in.Email}).
+		ToSql()
+	if err != nil {
+		s.logger.Error("Error while building a query")
+		return nil, err
+	}
+
+	var id string
+
+	err = s.postgres.QueryRowContext(ctx, query, args...).Scan(&id)
+	if err != nil {
+		s.logger.Error("Error while executing a query")
+		return nil, err
+	}
+
+	return &pb.RegisterResponse{
+		UserId: id,
+	}, nil
+}
+
 func hashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {

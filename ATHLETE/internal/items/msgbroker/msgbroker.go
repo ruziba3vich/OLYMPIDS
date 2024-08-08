@@ -53,9 +53,9 @@ func (m *MsgBroker) StartToConsume(ctx context.Context, contentType string) {
 	consumerCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	go m.consumeMessages(consumerCtx, m.createAthlete, "create")
-	go m.consumeMessages(consumerCtx, m.updateAthlete, "update")
-	go m.consumeMessages(consumerCtx, m.deleteAthlete, "deletion")
+	go m.consumeMessages(consumerCtx, m.createAthlete, "create_athlete")
+	go m.consumeMessages(consumerCtx, m.updateAthlete, "update_athlete")
+	go m.consumeMessages(consumerCtx, m.deleteAthlete, "delete_athlete")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
